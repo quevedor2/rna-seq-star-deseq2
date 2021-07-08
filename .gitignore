@@ -21,3 +21,6 @@ scripts/.snakemake*
 !.gitattributes
 !.test
 !.test/data
+!scheduler.sh
+!slurm
+!slurm/*
