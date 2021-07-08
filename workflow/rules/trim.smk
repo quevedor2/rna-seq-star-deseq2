@@ -5,7 +5,7 @@ rule get_sra:
     log:
         "logs/get-sra/{accession}.log",
     wrapper:
-        "0.56.0/bio/sra-tools/fasterq-dump"
+        "v0.75.0/bio/sra-tools/fasterq-dump"
 
 
 rule cutadapt_pipe:
@@ -36,7 +36,7 @@ rule cutadapt_pe:
         adapters=lambda w: str(units.loc[w.sample].loc[w.unit, "adapters"]),
     threads: 8
     wrapper:
-        "0.59.2/bio/cutadapt/pe"
+        "v0.75.0/bio/cutadapt/pe"
 
 
 rule cutadapt_se:
@@ -52,7 +52,7 @@ rule cutadapt_se:
         adapters_r1=lambda w: str(units.loc[w.sample].loc[w.unit, "adapters"]),
     threads: 8
     wrapper:
-        "0.59.2/bio/cutadapt/se"
+        "v0.75.0/bio/cutadapt/se"
 
 
 rule merge_fastqs:
