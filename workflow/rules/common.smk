@@ -1,11 +1,9 @@
 import glob
 
 import pandas as pd
-from snakemake.remote import FTP
 from snakemake.utils import validate
 
-ftp = FTP.RemoteProvider()
-
+configfile: "config/config.yaml"
 validate(config, schema="../schemas/config.schema.yaml")
 
 samples = (
