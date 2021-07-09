@@ -19,7 +19,7 @@ include: "rules/diffexp.smk"
 
 rule all:
     input:
-        expand("results/star/se/{sample}-merged/Aligned.out.bam", sample=samples.index)
+        expand("results/star/se/{sample}-merged/Aligned.out.sam", sample=samples.index)
         #expand("results/trimmed/{sample}_merged_single.fastq.gz", sample=samples.index)
         #get_final_output(),
         #"results/qc/multiqc_report.html",

@@ -40,8 +40,8 @@ diffexp:
 params:
   cutadapt-pe: ""
   cutadapt-se: ""
-  gtf: "/cluster/projects/mcgahalab/ref/genomes/human/GRCh38/GTF/genome.gtf"
-  star: ""
 
 star:
   star-genome: "/cluster/projects/mcgahalab/ref/genomes/human/GRCh38/STARindex/sjdb_74"
+  gtf: "/cluster/projects/mcgahalab/ref/genomes/human/GRCh38/GTF/genome.gtf"
+  params: ""

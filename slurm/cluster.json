@@ -12,3 +12,9 @@ bowtie2:
   cpus-per-task : 4
   mem : 30G
   time : 23:00:00
+
+align_se:
+  cpus-per-task : 12
+  mem : 59G
+  partition : 'himem'
+  time : 23:00:00
