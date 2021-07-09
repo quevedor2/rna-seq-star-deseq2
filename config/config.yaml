@@ -14,6 +14,11 @@ ref:
   # Genome build
   build: GRCh38
 
+ref_build:
+  gtf: "/cluster/projects/mcgahalab/ref/genomes/human/GRCh38/GTF/genome.gtf"
+  star-genome: "/cluster/projects/mcgahalab/ref/genomes/human/GRCh38/STARindex"
+  bwa-index: "/cluster/projects/mcgahalab/ref/genomes/human/GRCh38/BWAIndex"
+
 trimming:
   activate: False
 
