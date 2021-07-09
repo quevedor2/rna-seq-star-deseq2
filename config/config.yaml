@@ -14,9 +14,7 @@ ref:
   # Genome build
   build: GRCh38
 
-ref_build:
-  gtf: "/cluster/projects/mcgahalab/ref/genomes/human/GRCh38/GTF/genome.gtf"
-  star-genome: "/cluster/projects/mcgahalab/ref/genomes/human/GRCh38/STARindex"
+ref_index:
   bwa-index: "/cluster/projects/mcgahalab/ref/genomes/human/GRCh38/BWAIndex"
 
 trimming:
@@ -42,4 +40,8 @@ diffexp:
 params:
   cutadapt-pe: ""
   cutadapt-se: ""
+  gtf: "/cluster/projects/mcgahalab/ref/genomes/human/GRCh38/GTF/genome.gtf"
   star: ""
+
+star:
+  star-genome: "/cluster/projects/mcgahalab/ref/genomes/human/GRCh38/STARindex/sjdb_74"

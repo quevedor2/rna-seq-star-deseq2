@@ -8,10 +8,8 @@ rule align_pe:
     log:
         "logs/star-pe/{sample}-{unit}.log",
     params:
-        index=config["ref_build"]["star-genome"],
-        extra="--quantMode GeneCounts --sjdbGTFfile {} {}".format(
-            "resources/genome.gtf", config["params"]["star"]
-        ),
+        index=config["star"]["star-genome"],
+        extra="--quantMode GeneCounts --sjdbGTFfile {} {}".format(config["params"]["gtf"]),
     threads: 24
     wrapper:
         "v0.75.0/bio/star/align"
@@ -26,10 +24,8 @@ rule align_se:
     log:
         "logs/star-se/{sample}-{unit}.log",
     params:
-        index=config["ref_build"]["star-genome"],
-        extra="--quantMode GeneCounts --sjdbGTFfile {} {}".format(
-            "resources/genome.gtf", config["params"]["star"]
-        ),
+        index=config["star"]["star-genome"],
+        extra="--quantMode GeneCounts --sjdbGTFfile {} {}".format(config["params"]["gtf"]),
     threads: 24
     wrapper:
         "v0.75.0/bio/star/align"
