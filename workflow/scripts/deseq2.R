@@ -14,6 +14,7 @@ if (snakemake@threads > 1) {
 
 dds <- readRDS(snakemake@input[[1]])
 
+print(str(snakemake@params[['contrast']]))
 contrast <- c("condition", snakemake@params[["contrast"]])
 res <- results(dds, contrast=contrast, parallel=parallel)
 # shrink fold changes for lowly expressed genes
