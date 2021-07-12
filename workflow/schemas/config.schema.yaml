@@ -70,12 +70,9 @@ properties:
         type: string
       cutadapt-se:
         type: string
-      star:
-        type: string
     required:
       - cutadapt-pe
       - cutadapt-se
-      - star
 
 required:
   - samples

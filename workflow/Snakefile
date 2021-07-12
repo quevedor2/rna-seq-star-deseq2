@@ -19,6 +19,10 @@ include: "rules/diffexp.smk"
 
 rule all:
     input:
+        "results/pca.svg",
+        "../report/diffexp.rst",
+        "results/deseq2/normcounts.tsv",
+        "results/counts/all.tsv",
         expand("results/star/se/{sample}-merged/Aligned.out.sam", sample=samples.index)
         #expand("results/trimmed/{sample}_merged_single.fastq.gz", sample=samples.index)
         #get_final_output(),

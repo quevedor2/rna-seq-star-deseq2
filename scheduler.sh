@@ -7,7 +7,7 @@
 #SBATCH -p all
 #SBATCH --mem=2gb
 
-cd /cluster/home/quever/workflows/cutandrun_snakemake
+cd /cluster/home/quever/workflows/rna-seq-star-deseq2
 condaprefix='/cluster/home/quever/workflows/rna-seq-star-deseq2/.snakemake/conda'
 
 snakemake \
