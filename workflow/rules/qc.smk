@@ -3,7 +3,7 @@
 
 rule rseqc_gtf2bed:
     input:
-        "resources/genome.gtf",
+        config["star"]["gtf"],
     output:
         bed="results/qc/rseqc/annotation.bed",
         db=temp("results/qc/rseqc/annotation.db"),
