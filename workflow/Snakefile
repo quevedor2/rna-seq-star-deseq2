@@ -12,6 +12,7 @@ include: "rules/trim.smk"
 include: "rules/qc.smk"
 include: "rules/align.smk"
 include: "rules/diffexp.smk"
+include: "rules/genotyping.smk"
 
 
 ##### target rules #####
