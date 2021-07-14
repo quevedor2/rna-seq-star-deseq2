@@ -34,7 +34,7 @@ rule collect_allelic_counts:
     target=config['genotyping']['target'],
   shell:
     "gatk --java-options '-Xmx20G  -XX:ParallelGCThreads=4' CollectAllelicCounts "
-    "-I {input} "
+    "-I {input.bam} "
     "-R {params.ref} "
     "-L {params.target} "
     "-O {output} > {log} 2>&1"
