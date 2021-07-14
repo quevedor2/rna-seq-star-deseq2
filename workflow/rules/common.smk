@@ -151,6 +151,14 @@ def get_star_bam(wildcards):
         lib, wildcards.sample, wildcards.unit
     )
 
+def get_star_bai(wildcards):
+    if is_paired_end(wildcards.sample):
+        lib = "pe"
+    else:
+        lib = "se"
+    return "results/star/{}/{}-{}/Aligned.out.bam.bai".format(
+        lib, wildcards.sample, wildcards.unit
+    )
 
 def get_strandedness(units):
     if "strandedness" in units.columns:

@@ -1,6 +1,17 @@
+rule index_duplicates:
+  input:
+    get_star_bam,
+  output:
+    "results/star/pe/{sample}-{unit}/Aligned.out.bam.bai",
+  log:
+    "logs/samtools/index/{sample}-{unit}.log"
+  wrapper:
+    "0.73.0/bio/samtools/index"
+
 rule collect_allelic_counts:
   input:
     bam=get_star_bam,
+    bai=get_star_bai,
   output:
     "results/genotyping/{sample}-{unit}.allelicCounts.tsv",
   conda:
@@ -8,8 +19,8 @@ rule collect_allelic_counts:
   log:
     "logs/gatk/collectalleliccounts/{sample}-{unit}.log"
   params:
-    ref=config['common']['genome'],
-    target=config['params']['gatk']['collectalleliccounts']['target'],
+    ref=config['ref_index']['genome'],
+    target=config['genotyping']['target'],
   shell:
     "gatk --java-options '-Xmx20G  -XX:ParallelGCThreads=4' CollectAllelicCounts "
     "-I {input} "
@@ -80,7 +91,7 @@ rule filt_AD_dbsnp:
   output:
     "results/zygosity/AD/aggregate_pos.txt",
   params:
-    target=config['params']['gatk']['collectalleliccounts']['target'],
+    target=config['genotyping']['target'],
   conda:
     "../envs/perl.yaml",
   shell:
@@ -99,7 +110,7 @@ rule run_wp_zygosity:
   params:
     outdir='results/zygosity/wadingpool',
     cndir='results/cnv/ichorcna',
-    genome=config['common']['build'],
+    genome=config['ref']['build'],
     maxstate=300,
   conda:
     "../envs/r.yaml",
