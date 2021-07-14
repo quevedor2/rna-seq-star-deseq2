@@ -6,7 +6,7 @@ rule index_se:
   log:
     "logs/samtools/index/{sample}-{unit}.log"
   wrapper:
-    "0.73.0/bio/samtools/index"
+    "v0.75.0/bio/samtools/index"
 
 rule index_pe:
   input:
@@ -16,7 +16,7 @@ rule index_pe:
   log:
     "logs/samtools/index/{sample}-{unit}.log"
   wrapper:
-    "0.73.0/bio/samtools/index"
+    "v0.75.0/bio/samtools/index"
 
 
 rule collect_allelic_counts:
