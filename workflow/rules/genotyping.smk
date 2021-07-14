@@ -1,4 +1,14 @@
-rule index_duplicates:
+rule index_se:
+  input:
+    get_star_bam,
+  output:
+    "results/star/se/{sample}-{unit}/Aligned.out.bam.bai",
+  log:
+    "logs/samtools/index/{sample}-{unit}.log"
+  wrapper:
+    "0.73.0/bio/samtools/index"
+
+rule index_pe:
   input:
     get_star_bam,
   output:
@@ -7,6 +17,7 @@ rule index_duplicates:
     "logs/samtools/index/{sample}-{unit}.log"
   wrapper:
     "0.73.0/bio/samtools/index"
+
 
 rule collect_allelic_counts:
   input:
