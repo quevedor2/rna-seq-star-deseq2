@@ -1,33 +1,18 @@
-from snakemake.utils import min_version
-
-##### set minimum snakemake version #####
-min_version("5.12.0")
-
-
-##### setup report #####
-configfile: "config/config.yaml"
-
-
-report: "report/workflow.rst"
-
-
-##### setup singularity #####
-
-
 # this container defines the underlying OS for each job when using the workflow
 # with --use-conda --use-singularity
-container: "docker://continuumio/miniconda3"
+#container: "docker://continuumio/miniconda3"
 
+#workdir: "/cluster/projects/mcgahalab/data/mcgahalab/wither_mcgaha_ram/snakemake_workflow/"
+workdir: "/cluster/home/quever/workflows/rnaseq_test/"
 
 ##### load rules #####
-
-
 include: "rules/common.smk"
 include: "rules/ref.smk"
 include: "rules/trim.smk"
 include: "rules/qc.smk"
 include: "rules/align.smk"
 include: "rules/diffexp.smk"
+include: "rules/genotyping.smk"
 
 
 ##### target rules #####
@@ -35,5 +20,14 @@ include: "rules/diffexp.smk"
 
 rule all:
     input:
-        get_final_output(),
+        "results/pca.svg",
+        #"../report/diffexp.rst",
+        "results/deseq2/normcounts.tsv",
+        "results/counts/all.tsv",
+        expand("results/star/se/{sample}-merged/Aligned.SortedByCoordinate.out.bam", sample=samples.index),
         "results/qc/multiqc_report.html",
+        expand("results/genotyping/{sample}-merged.allelicCounts.tsv", sample=samples.index),
+        
+        #expand("results/trimmed/{sample}_merged_single.fastq.gz", sample=samples.index)
+        #get_final_output(),
+        

@@ -14,6 +14,10 @@ ref:
   # Genome build
   build: GRCh38
 
+ref_index:
+  bwa-index: "/cluster/projects/mcgahalab/ref/genomes/human/GRCh38/BWAIndex"
+  genome: "/cluster/projects/mcgahalab/ref/genomes/human/GRCh38/genome.fasta"
+
 trimming:
   activate: False
 
@@ -26,6 +30,10 @@ pca:
     # columns of sample sheet to use for PCA
     - condition
 
+genotyping:
+  target: "/cluster/projects/mcgahalab/ref/dbsnp/b151_GRCh38p7/bed/common_all_20180418.bed"
+  min_n: 2
+
 diffexp:
   # contrasts for the deseq2 results method
   contrasts:
@@ -37,4 +45,8 @@ diffexp:
 params:
   cutadapt-pe: ""
   cutadapt-se: ""
-  star: ""
+
+star:
+  star-genome: "/cluster/projects/mcgahalab/ref/genomes/human/GRCh38/STARindex/sjdb_74"
+  gtf: "/cluster/projects/mcgahalab/ref/genomes/human/GRCh38/GTF/genome.gtf"
+  params: ""

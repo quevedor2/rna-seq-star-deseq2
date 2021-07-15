@@ -3,7 +3,7 @@
 
 rule rseqc_gtf2bed:
     input:
-        "resources/genome.gtf",
+        config["star"]["gtf"],
     output:
         bed="results/qc/rseqc/annotation.bed",
         db=temp("results/qc/rseqc/annotation.db"),
@@ -190,4 +190,4 @@ rule multiqc:
     log:
         "logs/multiqc.log",
     wrapper:
-        "0.75.0/bio/multiqc"
+        "v0.75.0/bio/multiqc"

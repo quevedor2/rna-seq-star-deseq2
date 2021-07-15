@@ -9,7 +9,7 @@ properties:
     type: string
   units:
     type: string
-
+  
   ref:
     type: object
     properties:
@@ -23,7 +23,7 @@ properties:
       - species
       - release
       - build
-
+  
   trimming:
     type: object
     properties:
@@ -39,7 +39,7 @@ properties:
         type: boolean
     required:
       - activate
-
+  
   pca:
     type: object
     properties:
@@ -52,7 +52,7 @@ properties:
     required:
       - labels
       - activate
-
+  
   diffexp:
     type: object
     properties:
@@ -62,7 +62,7 @@ properties:
         type: string
     required:
       - contrasts
-
+  
   params:
     type: object
     properties:
@@ -70,12 +70,9 @@ properties:
         type: string
       cutadapt-se:
         type: string
-      star: 
-        type: string
     required:
       - cutadapt-pe
       - cutadapt-se
-      - star
 
 required:
   - samples

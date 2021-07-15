@@ -1,11 +1,10 @@
 import glob
 
 import pandas as pd
-from snakemake.remote import FTP
 from snakemake.utils import validate
-
-ftp = FTP.RemoteProvider()
-
+#from snakemake.remote import FTP
+#ftp = FTP.RemoteProvider()
+configfile: "config/config.yaml"
 validate(config, schema="../schemas/config.schema.yaml")
 
 samples = (
@@ -126,7 +125,7 @@ def get_map_reads_input_R2(wildcards):
 
 def get_star_output_all_units(wildcards, fi="counts"):
     if fi == "bam":
-        outfile = "Aligned.out.bam"
+        outfile = "Aligned.sortedByCoord.out.bam"
     else:
         outfile = "ReadsPerGene.out.tab"
     res = []
@@ -148,10 +147,27 @@ def get_star_bam(wildcards):
         lib = "pe"
     else:
         lib = "se"
-    return "results/star/{}/{}-{}/Aligned.out.bam".format(
+    return "results/star/{}/{}-{}/Aligned.sortedByCoord.out.bam".format(
         lib, wildcards.sample, wildcards.unit
     )
 
+def get_rg_bam(wildcards):
+    if is_paired_end(wildcards.sample):
+        lib = "pe"
+    else:
+        lib = "se"
+    return "results/star/{}/{}-{}/Aligned.rg.bam".format(
+        lib, wildcards.sample, wildcards.unit
+    )
+
+def get_rg_bai(wildcards):
+    if is_paired_end(wildcards.sample):
+        lib = "pe"
+    else:
+        lib = "se"
+    return "results/star/{}/{}-{}/Aligned.rg.bam.bai".format(
+        lib, wildcards.sample, wildcards.unit
+    )
 
 def get_strandedness(units):
     if "strandedness" in units.columns:

@@ -1,0 +1,20 @@
+__default__:
+  mem : 8G
+  cpus-per-task : 1
+  partition : 'all'
+  time : 08:00:00
+
+trim_galore_pe:
+  mem : 20G
+  time : 03:00:00
+
+bowtie2:
+  cpus-per-task : 4
+  mem : 30G
+  time : 23:00:00
+
+align_se:
+  cpus-per-task : 12
+  mem : 59G
+  partition : 'himem'
+  time : 23:00:00
