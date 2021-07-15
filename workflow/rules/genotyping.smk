@@ -12,7 +12,7 @@ rule replace_rg_pe:
   wrapper:
     "v0.75.0/bio/picard/addorreplacereadgroups"
 
-rule replace_rg_pe:
+rule replace_rg_se:
   input:
     get_star_bam,
   output:

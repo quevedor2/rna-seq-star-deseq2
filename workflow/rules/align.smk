@@ -22,7 +22,7 @@ rule align_se:
     input:
         fq1=get_map_reads_input_R1,
     output:
-        "results/star/se/{sample}-{unit}/Aligned.out.bam",
+        "results/star/se/{sample}-{unit}/Aligned.SortedByCoordinate.out.bam",
         "results/star/se/{sample}-{unit}/ReadsPerGene.out.tab",
     log:
         "logs/star-se/{sample}-{unit}.log",

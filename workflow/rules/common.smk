@@ -147,7 +147,7 @@ def get_star_bam(wildcards):
         lib = "pe"
     else:
         lib = "se"
-    return "results/star/{}/{}-{}/Aligned.out.bam".format(
+    return "results/star/{}/{}-{}/Aligned.SortedByCoordinate.out.bam".format(
         lib, wildcards.sample, wildcards.unit
     )
 
