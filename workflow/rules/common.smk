@@ -125,7 +125,7 @@ def get_map_reads_input_R2(wildcards):
 
 def get_star_output_all_units(wildcards, fi="counts"):
     if fi == "bam":
-        outfile = "Aligned.out.bam"
+        outfile = "Aligned.SortedByCoordinate.out.bam"
     else:
         outfile = "ReadsPerGene.out.tab"
     res = []
