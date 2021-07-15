@@ -3,7 +3,7 @@ rule align_pe:
         fq1=get_map_reads_input_R1,
         fq2=get_map_reads_input_R2,
     output:
-        "results/star/pe/{sample}-{unit}/Aligned.SortedByCoordinate.out.bam",
+        "results/star/pe/{sample}-{unit}/Aligned.sortedByCoord.out.bam",
         "results/star/pe/{sample}-{unit}/ReadsPerGene.out.tab",
     log:
         "logs/star-pe/{sample}-{unit}.log",
@@ -22,7 +22,7 @@ rule align_se:
     input:
         fq1=get_map_reads_input_R1,
     output:
-        "results/star/se/{sample}-{unit}/Aligned.SortedByCoordinate.out.bam",
+        "results/star/se/{sample}-{unit}/Aligned.sortedByCoord.out.bam",
         "results/star/se/{sample}-{unit}/ReadsPerGene.out.tab",
     log:
         "logs/star-se/{sample}-{unit}.log",
