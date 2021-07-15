@@ -101,6 +101,14 @@ Basically, you will need to add a path that will have the following structure:
 ### 5. Building the conda-envs (Build node)
 Now that you have your "intialize" and your "project" directory set up, you can start building your conda environments required for the workflow.
 
+Before you build your conda-envs, you'll need to switch the `workdir:` path in your `workflow/Snakefile`:
+```
+> workflow/Snakefile
+workdir: "/path/to/workflows/intialize/rnaseq-star"
+```
+
+Once the Snakefile workdir path has been changed, you can run the entire snakemake workflow using `conda-create-envs-only`:
+
 ```
 cd ~/workflow/rna-seq-star-deseq2
 condaprefix=$(readlink -f .snakemake/conda)
@@ -120,6 +128,12 @@ The idea behind this is that snakemake will install the conda envs to `.snakemak
 
 ### 6. Run your workflow (Build/Project node)
 Once the workflow has been set up and the environments have been created, you can finally run your pre-configured workflow on your project directory. You will need to reconfigure some paths in your `scheduler.sh` script. Be sure to activate your `snakemake` env before queuing the scheduler.
+
+Before you run your workflow on your project directory, you'll need to switch the `workdir:` path in your `workflow/Snakefile`:
+```
+> workflow/Snakefile
+workdir: "/path/to/group_directory/project"
+```
 
 The `scheduler.sh` script runs the following command in a 5-day long job, with its main purpose to track the job queue and job submission on the slurm cluster.
 ```
