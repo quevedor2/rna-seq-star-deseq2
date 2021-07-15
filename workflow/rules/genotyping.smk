@@ -1,8 +1,36 @@
-rule index_se:
+rule replace_rg_pe:
   input:
     get_star_bam,
   output:
-    "results/star/se/{sample}-{unit}/Aligned.out.bam.bai",
+    "results/star/pe/{sample}-{unit}/Aligned.rg.bam",
+  log:
+    "logs/picard/replace_rg_pe/{sample}-{unit}.log"
+  params:
+    "RGLB=lib1 RGPL=illumina RGPU={sample}-{unit} RGSM={sample}-{unit}"
+  resources:
+    mem_mb=1024
+  wrapper:
+    "v0.75.0/bio/picard/addorreplacereadgroups"
+
+rule replace_rg_pe:
+  input:
+    get_star_bam,
+  output:
+    "results/star/se/{sample}-{unit}/Aligned.rg.bam",
+  log:
+    "logs/picard/replace_rg_se/{sample}-{unit}.log"
+  params:
+    "RGLB=lib1 RGPL=illumina RGPU={sample}-{unit} RGSM={sample}-{unit}"
+  resources:
+    mem_mb=1024
+  wrapper:
+    "v0.75.0/bio/picard/addorreplacereadgroups"
+
+rule index_se:
+  input:
+    get_rg_bam,
+  output:
+    "results/star/se/{sample}-{unit}/Aligned.rg.bam.bai",
   log:
     "logs/samtools/index/{sample}-{unit}.log"
   wrapper:
@@ -10,9 +38,9 @@ rule index_se:
 
 rule index_pe:
   input:
-    get_star_bam,
+    get_rg_bam,
   output:
-    "results/star/pe/{sample}-{unit}/Aligned.out.bam.bai",
+    "results/star/pe/{sample}-{unit}/Aligned.rg.bam.bai",
   log:
     "logs/samtools/index/{sample}-{unit}.log"
   wrapper:
@@ -21,8 +49,8 @@ rule index_pe:
 
 rule collect_allelic_counts:
   input:
-    bam=get_star_bam,
-    bai=get_star_bai,
+    bam=get_rg_bam,
+    bai=get_rg_bai,
   output:
     "results/genotyping/{sample}-{unit}.allelicCounts.tsv",
   conda:

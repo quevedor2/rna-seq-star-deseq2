@@ -151,12 +151,21 @@ def get_star_bam(wildcards):
         lib, wildcards.sample, wildcards.unit
     )
 
-def get_star_bai(wildcards):
+def get_rg_bam(wildcards):
     if is_paired_end(wildcards.sample):
         lib = "pe"
     else:
         lib = "se"
-    return "results/star/{}/{}-{}/Aligned.out.bam.bai".format(
+    return "results/star/{}/{}-{}/Aligned.rg.bam".format(
+        lib, wildcards.sample, wildcards.unit
+    )
+
+def get_rg_bai(wildcards):
+    if is_paired_end(wildcards.sample):
+        lib = "pe"
+    else:
+        lib = "se"
+    return "results/star/{}/{}-{}/Aligned.rg.bam.bai".format(
         lib, wildcards.sample, wildcards.unit
     )
 
