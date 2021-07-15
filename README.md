@@ -10,17 +10,14 @@
   <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
   <ol>
     <li>
-      <a href="#about">About the Workflow</a>
+      <a href="#about">About</a>
     </li>
-     
     <li>
-      <a href="#updates">Major Updates</a>
+      <a href="#updates">Updates</a>
     </li>
-      
     <li>
-      <a href="#setting-up-the-worfklow">Setting up the Workflow</a>
+      <a href="#setting-up">Setting up</a>
     </li>
-      
     <li>
       <a href="#workflow-dag">Workflow DAG</a>
     </li>
@@ -42,7 +39,7 @@ Link to the original snakemake workflow: [snakemake-workflows/rna-seq-star-deseq
 * [TODO]: Add a script to initiate a blank working copy for building envs
 * [TODO]: Implemented first working copy of genotype identification
 
-## Setting up the Workflow
+## Setting up
 
 As states above, this workflow is set up to work on the H4H cluster. As such, there are major limitations when working on this system. For instance, only the home directory contains internet access while typically, all analysis needs to be conducted on the project directories which can only be accessed on nodes with no internet access. Additionally, the home directory contains a very limited amount of storage space.
 
