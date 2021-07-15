@@ -61,6 +61,9 @@ rule collect_allelic_counts:
     ref=config['ref_index']['genome'],
     target=config['genotyping']['target'],
   shell:
+    "touch {output}; "
+    "echo {input.bam} > {log}; "
+    "echo {input.bai} >> {log}; "
     "gatk --java-options '-Xmx20G  -XX:ParallelGCThreads=4' CollectAllelicCounts "
     "-I {input.bam} "
     "-R {params.ref} "
