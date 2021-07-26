@@ -24,7 +24,7 @@ rule all:
         #"../report/diffexp.rst",
         "results/deseq2/normcounts.tsv",
         "results/counts/all.tsv",
-        expand("results/star/se/{sample}-merged/Aligned.SortedByCoordinate.out.bam", sample=samples.index),
+        expand("results/star/se/{sample}-merged/Aligned.sortedByCoord.out.bam", sample=samples.index),
         "results/qc/multiqc_report.html",
         expand("results/genotyping/{sample}-merged.allelicCounts.tsv", sample=samples.index),
         
