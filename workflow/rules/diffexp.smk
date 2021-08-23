@@ -64,3 +64,24 @@ rule deseq2:
     threads: get_deseq2_threads
     script:
         "../scripts/deseq2.R"
+
+rule gsea:
+    input:
+        "results/diffexp/{contrast}.diffexp.tsv",
+    output:
+        gseakegg_table="results/gsea/{contrast}.gsea-kegg.tsv",
+        gseakegg_pdf="results/gsea/{contrast}.gsea-kegg.pdf",
+        gseago_table="results/gsea/{contrast}.gsea-go.tsv",
+        gseago_pdf="results/gsea/{contrast}.gsea-go.pdf",
+        go="results/gsea/{contrast}.go.tsv",
+    params:
+        contrast=get_contrast,
+        minbase=config["gsea"]["min_base_mean"],
+        maxp=config["gsea"]["max_p"],
+    conda:
+        "../envs/deseq2.yaml"
+    log:
+        "logs/gsea/{contrast}.log",
+    threads: get_deseq2_threads
+    script:
+        "../scripts/gsea.R"

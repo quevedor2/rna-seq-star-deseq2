@@ -46,6 +46,10 @@ params:
   cutadapt-pe: ""
   cutadapt-se: ""
 
+gsea:
+  min_base_mean: 50
+  max_p: 0.05
+
 star:
   star-genome: "/cluster/projects/mcgahalab/ref/genomes/human/GRCh38/STARindex/sjdb_74"
   gtf: "/cluster/projects/mcgahalab/ref/genomes/human/GRCh38/GTF/genome.gtf"

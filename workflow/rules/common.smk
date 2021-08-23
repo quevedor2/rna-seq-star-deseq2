@@ -15,7 +15,7 @@ samples = (
 
 def get_final_output():
     final_output = expand(
-        "results/diffexp/{contrast}.diffexp.tsv",
+        "results/diffexp/{contrast}.gsea-kegg.pdf",
         contrast=config["diffexp"]["contrasts"],
     )
     return final_output
