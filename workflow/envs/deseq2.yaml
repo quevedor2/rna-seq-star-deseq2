@@ -5,9 +5,8 @@ channels:
 dependencies:
   - bioconductor-deseq2 =1.30.0
   - bioconductor-apeglm =1.12.0
-  - bioconductor-org.hs.eg.db =3.6.0
-  - bioconductor-kegg.db =3.2.3
-  - bioconductor-go.db =3.6.0
-  - bioconductor-clusterprofiler =3.8.1
-  - bioconductor-enrichplot =1.0.2
-  - r-ggplot2 3.1.1
+  - bioconductor-org.hs.eg.db
+  - bioconductor-kegg.db
+  - bioconductor-go.db
+  - bioconductor-clusterprofiler
+  - bioconductor-enrichplot
