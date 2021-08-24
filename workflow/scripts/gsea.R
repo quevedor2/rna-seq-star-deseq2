@@ -26,16 +26,17 @@ res <- read.table(snakemake@input[[1]], sep="\t",
 rownames(res) <- res$gene
 
 ## Select the significant genes and filters
-resSigind = res[ which(res$padj < snakemake@params[["maxp"]] &
-                           res$log2FoldChange > 0 &
-                           res$baseMean > snakemake@params[["minbase"]]), ]
-resSigrep = res[ which(res$padj < snakemake@params[["maxp"]] &
-                       res$log2FoldChange < 0 &
-                       res$baseMean > snakemake@params[["minbase"]]), ]
+resSigind = res[ which(res$padj < as.numeric(as.character(snakemake@params[["maxp"]])) &
+                         res$log2FoldChange > 0 &
+                         res$baseMean > as.numeric(as.character(snakemake@params[["minbase"]]))), ]
+resSigrep = res[ which(res$padj < as.numeric(as.character(snakemake@params[["maxp"]])) &
+                         res$log2FoldChange < 0 &
+                         res$baseMean > as.numeric(as.character(snakemake@params[["minbase"]]))), ]
 resSig = rbind(resSigind, resSigrep)
-resFilt <- res[res$baseMean > snakemake@params[["minbase"]],]
+resFilt <- res[res$baseMean > as.numeric(as.character(snakemake@params[["minbase"]])),]
 
 ## GO ontology enrichment analysis
+print("GO Enrichment Analysis")
 params=new("GOHyperGParams",
            geneIds=unique(na.omit(gene_ids[rownames(resSig)])),
            universeGeneIds=unique(na.omit(gene_ids[resFilt$gene])),
@@ -51,6 +52,7 @@ write.table(go_summ, file=snakemake@output[["go"]],
             sep="\t", col.names=TRUE, row.names=FALSE, quote=FALSE)
 
 ## GSEA
+print("GSEA on GO terms")
 gene_list <- resFilt$log2FoldChange
 names(gene_list) <- resFilt$gene
 gene_list<-sort(na.omit(gene_list), decreasing = TRUE)
@@ -77,6 +79,7 @@ write.table(gse@result[,1:11], file=snakemake@output[["gseago_table"]],
 
 
 ## KEGG GSEA
+print("GSEA on KEGG terms")
 kegg_gene_list <- resFilt$log2FoldChange
 names(kegg_gene_list) <- gene_ids[resFilt$gene]
 kegg_gene_list <- kegg_gene_list[-which(is.na(names(kegg_gene_list)))]
