@@ -13,4 +13,3 @@ dependencies:
   - bioconductor-category
   - bioconductor-gostats
   - r-ggplot2
-  - r-ggridges
