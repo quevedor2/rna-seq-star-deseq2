@@ -10,7 +10,7 @@ rule prepare_reference:
   log:
     "logs/rsem/prepare-reference.log",
   wrapper:
-    "v0.75.0/bio/rsem/prepare-reference"
+    "0.77.0/bio/rsem/prepare-reference"
 
 rule calculate_expression:
   input:
@@ -25,7 +25,7 @@ rule calculate_expression:
   log:
     "logs/rsem/calculate_expression/{sample}-{unit}.log",
   wrapper:
-    "v0.75.0/bio/rsem/calculate-expression"
+    "0.77.0/bio/rsem/calculate-expression"
 
 rule rsem_generate_data_matrix:
   input:
@@ -37,4 +37,4 @@ rule rsem_generate_data_matrix:
   log:
     "logs/rsem/generate_data_matrix.log",
   wrapper:
-    "v0.75.0/bio/rsem/generate-data-matrix"
+    "0.77.0/bio/rsem/generate-data-matrix"
