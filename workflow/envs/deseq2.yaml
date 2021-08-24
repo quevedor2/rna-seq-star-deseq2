@@ -10,3 +10,4 @@ dependencies:
   - bioconductor-go.db
   - bioconductor-clusterprofiler
   - bioconductor-enrichplot
+  - bioconductor-category
