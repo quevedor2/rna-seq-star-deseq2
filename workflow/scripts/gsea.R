@@ -33,7 +33,7 @@ resSigrep = res[ which(res$padj < snakemake@params[["maxp"]] &
                        res$log2FoldChange < 0 &
                        res$baseMean > snakemake@params[["minbase"]]), ]
 resSig = rbind(resSigind, resSigrep)
-resFilt <- res[res$baseMean > min_expr,]
+resFilt <- res[res$baseMean > snakemake@params[["minbase"]],]
 
 ## GO ontology enrichment analysis
 params=new("GOHyperGParams",
