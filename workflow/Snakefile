@@ -12,6 +12,7 @@ include: "rules/trim.smk"
 include: "rules/qc.smk"
 include: "rules/align.smk"
 include: "rules/diffexp.smk"
+include: "rules/countmatrix.smk"
 include: "rules/genotyping.smk"
 
 
@@ -27,7 +28,6 @@ rule all:
         expand("results/star/se/{sample}-merged/Aligned.sortedByCoord.out.bam", sample=samples.index),
         "results/qc/multiqc_report.html",
         expand("results/genotyping/{sample}-merged.allelicCounts.tsv", sample=samples.index),
-        
+
         #expand("results/trimmed/{sample}_merged_single.fastq.gz", sample=samples.index)
         #get_final_output(),
-        

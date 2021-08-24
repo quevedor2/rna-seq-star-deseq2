@@ -2,7 +2,7 @@ rule count_matrix:
     input:
         get_star_output_all_units,
     output:
-        "results/counts/all.tsv",
+        "results/counts/all_old.tsv",
     log:
         "logs/count-matrix.log",
     params:

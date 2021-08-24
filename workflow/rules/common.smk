@@ -121,6 +121,15 @@ def get_map_reads_input_R2(wildcards):
         return ("results/merged/{sample}_R2.fastq.gz",)
     return ""
 
+def get_rsem_output_all_units(wildcards):
+    res = []
+    for unit in units.itertuples():
+        res.append(
+            "results/rsem/{}-{}.genes.results".format(
+                unit.sample_name, unit.unit_name
+            )
+        )
+    return res
 
 def get_star_output_all_units(wildcards, fi="counts"):
     if fi == "bam":
