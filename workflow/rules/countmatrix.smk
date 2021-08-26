@@ -14,14 +14,14 @@ rule prepare_reference:
 
 rule calculate_expression:
   input:
-    bam="results/star/se/{sample}-{unit}/Aligned.sortedByCoord.out.bam",
+    bam="results/star/se/{sample}-{unit}/Aligned.toTranscriptome.out.bam",
     reference="ref/reference.seq",
   output:
     genes_results="results/rsem/{sample}-{unit}.genes.results",
     isoforms_results="results/rsem/{sample}-{unit}.isoforms.results",
   params:
-    paired_end=lambda w: is_paired_end,
-    extra="--seed 42",
+    paired_end=str(is_paired_end({sample})),
+    extra="-bam --estimate-rspd --output-genome-bam --time --forward-prob 0 --seed 42",
   log:
     "logs/rsem/calculate_expression/{sample}-{unit}.log",
   wrapper:
