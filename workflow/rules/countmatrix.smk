@@ -20,7 +20,7 @@ rule calculate_expression:
     genes_results="results/rsem/{sample}-{unit}.genes.results",
     isoforms_results="results/rsem/{sample}-{unit}.isoforms.results",
   params:
-    paired_end=str(is_paired_end({sample})),
+    paired_end=lambda w: str(is_paired_end(w.sample)),
     extra="-bam --estimate-rspd --output-genome-bam --time --forward-prob 0 --seed 42",
   log:
     "logs/rsem/calculate_expression/{sample}-{unit}.log",

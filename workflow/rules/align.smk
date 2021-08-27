@@ -28,7 +28,7 @@ rule align_se:
         fq1=get_map_reads_input_R1,
     output:
         "results/star/se/{sample}-{unit}/Aligned.sortedByCoord.out.bam",
-        "results/star/pe/{sample}-{unit}/Aligned.toTranscriptome.out.bam",
+        "results/star/se/{sample}-{unit}/Aligned.toTranscriptome.out.bam",
         "results/star/se/{sample}-{unit}/ReadsPerGene.out.tab",
     log:
         "logs/star-se/{sample}-{unit}.log",
