@@ -19,6 +19,8 @@ rule calculate_expression:
   output:
     genes_results="results/rsem/{sample}-{unit}.genes.results",
     isoforms_results="results/rsem/{sample}-{unit}.isoforms.results",
+    tbam=temp("results/rsem/{sample}-{unit}.transcript.bam"),
+    gbam=temp("results/rsem/{sample}-{unit}.genome.bam"),
   params:
     paired_end=lambda w: str(is_paired_end(w.sample)),
     extra="-bam --estimate-rspd --output-genome-bam --time --forward-prob 0 --seed 42",
