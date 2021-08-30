@@ -31,10 +31,21 @@ rule rsem_generate_data_matrix:
   input:
     get_rsem_output_all_units,
   output:
-    "results/counts/all.tsv",
+    temp("results/counts/all.tmp"),
   params:
     extra="",
   log:
     "logs/rsem/generate_data_matrix.log",
   wrapper:
     "0.77.0/bio/rsem/generate-data-matrix"
+
+rule format_data_matrix:
+  input:
+    "results/counts/all.tmp",
+  output:
+    "results/counts/all.tsv",
+  shell:
+    "sed 's/\"//g' {input} |  "
+    "sed 's/results\/rsem\///g' | "
+    "sed 's/-merged.genes.results//g' | "
+    "sed '1 s/^/gene/' > {output}"
