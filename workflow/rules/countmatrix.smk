@@ -48,4 +48,5 @@ rule format_data_matrix:
     "sed 's/\"//g' {input} |  "
     "sed 's/results\/rsem\///g' | "
     "sed 's/-merged.genes.results//g' | "
-    "sed '1 s/^/gene/' > {output}"
+    "sed '1 s/^/gene/' | "
+    "sed -e 's/\.[0-9]*//g' > {output}"
