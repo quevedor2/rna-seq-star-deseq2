@@ -149,6 +149,14 @@ def get_star_output_all_units(wildcards, fi="counts"):
         )
     return res
 
+def get_star_transcriptome(wildcards):
+    if is_paired_end(wildcards.sample):
+        lib = "pe"
+    else:
+        lib = "se"
+    return "results/star/{}/{}-{}/Aligned.toTranscriptome.out.bam".format(
+        lib, wildcards.sample, wildcards.unit
+    )
 
 def get_star_bam(wildcards):
     if is_paired_end(wildcards.sample):

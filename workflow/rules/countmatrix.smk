@@ -14,7 +14,7 @@ rule prepare_reference:
 
 rule calculate_expression:
   input:
-    bam="results/star/se/{sample}-{unit}/Aligned.toTranscriptome.out.bam",
+    bam=get_star_transcriptome,
     reference="ref/reference.seq",
   output:
     genes_results="results/rsem/{sample}-{unit}.genes.results",
