@@ -22,7 +22,7 @@ rule calculate_expression:
     tbam=temp("results/rsem/{sample}-{unit}.transcript.bam"),
     gbam=temp("results/rsem/{sample}-{unit}.genome.bam"),
   params:
-    paired_end=lambda w: str(is_paired_end(w.sample)),
+    paired_end=lambda w: is_paired_end(w.sample),
     extra="-bam --estimate-rspd --output-genome-bam --time --forward-prob 0 --seed 42",
   log:
     "logs/rsem/calculate_expression/{sample}-{unit}.log",
