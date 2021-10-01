@@ -126,7 +126,7 @@ pdf(snakemake@output[["gseakegg_pdf"]], height = 20, width = 20)
 if(is.null(gse)){
     write.table(data.frame(), file=snakemake@output[["gseakegg_table"]],
               col.names = TRUE, row.names = TRUE, quote = FALSE)
-else {
+} else {
     tryCatch({
       print(dotplot(kk2, showCategory = 10, title = "Enriched Pathways" , split=".sign") +
          facet_grid(.~.sign))
