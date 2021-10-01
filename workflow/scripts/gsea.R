@@ -80,16 +80,21 @@ if(nrow(resFilt) > 0){
 
 pdf(snakemake@output[["gseago_pdf"]], height = 20, width = 20)
 if(is.null(gse)){
-  plot()
   write.table(data.frame(), file=snakemake@output[["gseago_table"]],
               col.names = TRUE, row.names = TRUE, quote = FALSE)
 } else {
-  print(emapplot(pairwise_termsim(gse), showCategory = 50))
-  print(ridgeplot(gse) + labs(x = "enrichment distribution"))
+  tryCatch({
+    print(emapplot(pairwise_termsim(gse), showCategory = 50))
+  }, error=function(e){warning("Could not plot GO emapplot")})
+
+  tryCatch({
+    print(ridgeplot(gse) + labs(x = "enrichment distribution"))
+  }, error=function(e){warning("Could not plot GO ridgeplot")})
   write.table(gse@result[,1:11], file=snakemake@output[["gseago_table"]],
               col.names = TRUE, row.names = TRUE, quote = FALSE)
   #gseaplot(gse, by = "all", title = gse$Description[1], geneSetID = 1)
 }
+plot(1, type='n', axes=FALSE, xlab='', ylab='')
 dev.off()
 
 
@@ -119,17 +124,24 @@ if(nrow(resFilt) > 0){
 
 pdf(snakemake@output[["gseakegg_pdf"]], height = 20, width = 20)
 if(is.null(gse)){
-    plot()
-
     write.table(data.frame(), file=snakemake@output[["gseakegg_table"]],
               col.names = TRUE, row.names = TRUE, quote = FALSE)
 else {
-    print(dotplot(kk2, showCategory = 10, title = "Enriched Pathways" , split=".sign") +
-        facet_grid(.~.sign))
-    print(emapplot(pairwise_termsim(kk2), showCategory = 50))
+    tryCatch({
+      print(dotplot(kk2, showCategory = 10, title = "Enriched Pathways" , split=".sign") +
+         facet_grid(.~.sign))
+     }, error=function(e){warning("Could not plot KEGG dotplot")})
+
+    tryCatch({
+        print(emapplot(pairwise_termsim(kk2), showCategory = 50))
+     }, error=function(e){warning("Could not plot KEGG emapplot")})
+
+    tryCatch({
     print(ridgeplot(kk2) + labs(x = "enrichment distribution"))
+     }, error=function(e){warning("Could not plot KEGG ridgeplot")})
 
     write.table(kk2@result[,1:11], file=snakemake@output[["gseakegg_table"]],
               col.names = TRUE, row.names = TRUE, quote = FALSE)
 }
+plot(1, type='n', axes=FALSE, xlab='', ylab='')
 dev.off()
