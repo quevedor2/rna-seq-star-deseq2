@@ -12,6 +12,23 @@ rule prepare_reference:
   wrapper:
     "0.77.0/bio/rsem/prepare-reference"
 
+#rule calculate_expression:
+#  input:
+#    bam=get_star_transcriptome,
+#    reference="ref/reference.seq",
+#  output:
+#    genes_results="results/rsem/{sample}-{unit}.genes.results",
+#    isoforms_results="results/rsem/{sample}-{unit}.isoforms.results",
+#    tbam=temp("results/rsem/{sample}-{unit}.transcript.bam"),
+#    gbam=temp("results/rsem/{sample}-{unit}.genome.bam"),
+#  params:
+#    paired_end=lambda w: is_paired_end(w.sample),
+#    extra="--estimate-rspd --output-genome-bam --time --forward-prob 0 --seed 42",
+#  log:
+#    "logs/rsem/calculate_expression/{sample}-{unit}.log",
+#  wrapper:
+#    "0.77.0/bio/rsem/calculate-expression"
+
 rule calculate_expression:
   input:
     bam=get_star_transcriptome,
@@ -22,12 +39,22 @@ rule calculate_expression:
     tbam=temp("results/rsem/{sample}-{unit}.transcript.bam"),
     gbam=temp("results/rsem/{sample}-{unit}.genome.bam"),
   params:
-    paired_end=lambda w: is_paired_end(w.sample),
+    outprefix="results/rsem/{sample}-{unit}",
+    paired_end=lambda w: "--paired-end" if is_paired_end(w.sample) else "",
     extra="-bam --estimate-rspd --output-genome-bam --time --forward-prob 0 --seed 42",
   log:
     "logs/rsem/calculate_expression/{sample}-{unit}.log",
-  wrapper:
-    "0.77.0/bio/rsem/calculate-expression"
+  shell:
+    "module load rsem/1.3.0; "
+    "rsem-calculate-expression "
+    "--num-threads 1 --bam "
+    "--estimate-rspd --output-genome-bam --time --forward-prob 0 --seed 42 "
+    "--bam "
+    "{params.paired_end} "
+    "{input.bam} "
+    "{input.reference} "
+    "{params.outprefix} "
+    "> {log} 2>&1"
 
 rule rsem_generate_data_matrix:
   input:
