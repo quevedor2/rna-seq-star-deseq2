@@ -30,7 +30,7 @@ rule prepare_reference:
       ln -s {params.refpath}.* ref/
     else
       module load rsem/1.3.0
-      python scripts/prepare-rsem-reference.py
+      python scripts/prepare-rsem-reference.py {output.seq} {params.extra}
     fi
     '''
 
