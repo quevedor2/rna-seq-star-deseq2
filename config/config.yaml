@@ -19,9 +19,11 @@ ref_index:
   genome: "/cluster/projects/mcgahalab/ref/genomes/human/GRCh38/genome.fasta"
 
 trimming:
+  # Should not be trimming RNAseq data, especially for STAR2, I haven't tested True
   activate: False
 
 mergeReads:
+  # Non-functional, keep to False
   activate: False
 
 pca:
@@ -31,6 +33,7 @@ pca:
     - condition
 
 genotyping:
+  # Currently non-functional, does not use these parameters at all
   target: "/cluster/projects/mcgahalab/ref/dbsnp/b151_GRCh38p7/bed/common_all_20180418.bed"
   min_n: 2
 
@@ -47,10 +50,13 @@ params:
   cutadapt-se: ""
 
 gsea:
+  # Only include genes with an expression above this value for GSEA (set to 0)
   min_base_mean: 50
+  # Report significant GSEA/over-representation for this p-value or lower
   max_p: 0.05
 
 star:
   star-genome: "/cluster/projects/mcgahalab/ref/genomes/human/GRCh38/STARindex/sjdb_74"
   gtf: "/cluster/projects/mcgahalab/ref/genomes/human/GRCh38/GTF/genome.gtf"
+  # Extra params added for STARv2, there are already hardcoded parames in workflow/rules/align.smk
   params: ""
