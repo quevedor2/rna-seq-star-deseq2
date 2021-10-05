@@ -1,3 +1,17 @@
+#rule prepare_reference:
+#  input:
+#    reference_genome=config['ref_index']['genome'],
+#  output:
+#    seq="ref/reference.seq",
+#    grp="ref/reference.grp",
+#    ti="ref/reference.ti",
+#  params:
+#    extra="--gtf {}".format(config["star"]["gtf"]),
+#  log:
+#    "logs/rsem/prepare-reference.log",
+#  wrapper:
+#    "0.77.0/bio/rsem/prepare-reference"
+
 rule prepare_reference:
   input:
     reference_genome=config['ref_index']['genome'],
@@ -6,11 +20,19 @@ rule prepare_reference:
     grp="ref/reference.grp",
     ti="ref/reference.ti",
   params:
+    refpath=config['rsem']['refpath'],
     extra="--gtf {}".format(config["star"]["gtf"]),
   log:
     "logs/rsem/prepare-reference.log",
-  wrapper:
-    "0.77.0/bio/rsem/prepare-reference"
+  shell:
+    '''
+    if [ -f "{params.refpath}.seq" ]; then
+      ln -s {params.refpath}.* ref/
+    else
+      module load rsem/1.3.0
+      python scripts/prepare-rsem-reference.py
+    fi
+    '''
 
 #rule calculate_expression:
 #  input:
@@ -56,6 +78,18 @@ rule calculate_expression:
     "{params.outprefix} "
     "> {log} 2>&1"
 
+#rule rsem_generate_data_matrix:
+#  input:
+#    get_rsem_output_all_units,
+#  output:
+#    temp("results/counts/all.tmp"),
+#  params:
+#    extra="",
+#  log:
+#    "logs/rsem/generate_data_matrix.log",
+#  wrapper:
+#    "0.77.0/bio/rsem/generate-data-matrix"
+
 rule rsem_generate_data_matrix:
   input:
     get_rsem_output_all_units,
@@ -66,7 +100,9 @@ rule rsem_generate_data_matrix:
   log:
     "logs/rsem/generate_data_matrix.log",
   wrapper:
-    "0.77.0/bio/rsem/generate-data-matrix"
+    "module load rsem/1.3.0; "
+    "rsem-generate-data-matrix {params.extra} "
+    "{input} > {output} 2>{log}"
 
 rule format_data_matrix:
   input:

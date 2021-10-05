@@ -17,6 +17,8 @@ ref:
 ref_index:
   bwa-index: "/cluster/projects/mcgahalab/ref/genomes/human/GRCh38/BWAIndex"
   genome: "/cluster/projects/mcgahalab/ref/genomes/human/GRCh38/genome.fasta"
+  # This reference file is made from rsem-prepare-reference, it will generate the reference.seq is not found
+  rsem: "/cluster/projects/mcgahalab/ref/genomes/human/GRCh38/rsemIndex/reference"
 
 trimming:
   # Should not be trimming RNAseq data, especially for STAR2, I haven't tested True
@@ -49,6 +51,8 @@ params:
   cutadapt-pe: ""
   cutadapt-se: ""
 
+rsem:
+  refpath: ""
 gsea:
   # Only include genes with an expression above this value for GSEA (set to 0)
   min_base_mean: 50
