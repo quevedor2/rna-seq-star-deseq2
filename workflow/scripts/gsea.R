@@ -18,10 +18,12 @@ if(snakemake@params[['genome']] == 'mus_musculus'){
     library("org.Mm.eg.db")
     annotation <- "org.Mm.eg.db"
     genome <- org.Mm.eg.db
+    org_code <- 'mmu'
 } else if(snakemake@params[['genome']] == 'homo_sapiens'){
     library("org.Hs.eg.db")
     annotation <- "org.Hs.eg.db"
     genome <- org.Hs.eg.db
+    org_code <- 'hsa'
 } else {
     stop("Your config 'genome' should be set to either 'homo_sapiens' or 'mus_musculus'")
 }
@@ -117,7 +119,7 @@ if(nrow(resFilt) > 0){
 
     kk2 <- tryCatch({
         gseKEGG(geneList     = kegg_gene_list,
-                 organism     = 'hsa',
+                 organism     = org_code,
                  nPerm        = 10000,
                  minGSSize    = 3,
                  maxGSSize    = 800,
