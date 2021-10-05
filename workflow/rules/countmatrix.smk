@@ -99,7 +99,7 @@ rule rsem_generate_data_matrix:
     extra="",
   log:
     "logs/rsem/generate_data_matrix.log",
-  wrapper:
+  shell:
     "module load rsem/1.3.0; "
     "rsem-generate-data-matrix {params.extra} "
     "{input} > {output} 2>{log}"
