@@ -20,7 +20,7 @@ rule prepare_reference:
     grp="ref/reference.grp",
     ti="ref/reference.ti",
   params:
-    refpath=config['rsem']['refpath'],
+    refpath=config['ref_index']['rsem'],
     extra="--gtf {}".format(config["star"]["gtf"]),
   log:
     "logs/rsem/prepare-reference.log",
