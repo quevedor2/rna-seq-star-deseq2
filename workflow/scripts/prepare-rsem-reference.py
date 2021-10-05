@@ -7,7 +7,7 @@ from snakemake.shell import shell
 # sys.argv[1] = snakemake.input.reference_genome
 input = sys.argv[1]
 # sys.argv[2] = snakemake.output.seq
-output_directory = os.path.dirname(os.path.abspath(sys.argv[1]))
+output_directory = os.path.dirname(os.path.abspath(sys.argv[2]))
 seq_file = os.path.basename(sys.argv[2])
 if seq_file.endswith(".seq"):
     reference_name = os.path.join(output_directory, seq_file[:-4])
