@@ -75,6 +75,7 @@ rule gsea:
         gseago_pdf="results/gsea/{contrast}.gsea-go.pdf",
         go="results/gsea/{contrast}.go.tsv",
     params:
+        genome=config['ref']['species'],
         contrast=get_contrast,
         minbase=config["gsea"]["min_base_mean"],
         maxp=config["gsea"]["max_p"],

@@ -7,7 +7,7 @@ units: config/units.tsv
 
 
 ref:
-  # Ensembl species name
+  # Ensembl species name [homo_sapiens, or mus_musculus]
   species: homo_sapiens
   # Ensembl release (make sure to take one where snpeff data is available, check 'snpEff databases' output)
   release: 100

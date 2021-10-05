@@ -3,9 +3,7 @@ sink(log)
 sink(log, type="message")
 
 library("DESeq2")
-library("org.Hs.eg.db")
 library("KEGG.db")
-
 library("GO.db")
 library("Category")
 library("GOstats")
@@ -16,8 +14,19 @@ library("ggplot2")
 
 
 # Create a reference map of ENSEMBL to SYMBOL
-txby <- keys(org.Hs.eg.db, 'ENSEMBL')
-gene_ids <- mapIds(org.Hs.eg.db, keys=txby, column='ENTREZID',
+if(snakemake@params[['genome']] == 'mus_musculus'){
+    library("org.Mm.eg.db")
+    annotation <- "org.Mm.eg.db"
+    genome <- org.Mm.eg.db
+} else if(snakemake@params[['genome']] == 'homo_sapiens'){
+    library("org.Hs.eg.db")
+    annotation <- "org.Hs.eg.db"
+    genome <- org.Hs.eg.db
+} else {
+    stop("Your config 'genome' should be set to either 'homo_sapiens' or 'mus_musculus'")
+}
+txby <- keys(genome, 'ENSEMBL')
+gene_ids <- mapIds(genome, keys=txby, column='ENTREZID',
                    keytype='ENSEMBL', multiVals="first")
 
 ## Read gene expr and DEG
@@ -41,7 +50,7 @@ if(nrow(resSig) > 0 & nrow(resFilt) > 0){
   params=new("GOHyperGParams",
              geneIds=unique(na.omit(gene_ids[rownames(resSig)])),
              universeGeneIds=unique(na.omit(gene_ids[resFilt$gene])),
-             annotation="org.Hs.eg.db",
+             annotation=annotation,
              ontology="BP",
              pvalueCutoff=0.001,
              conditional=TRUE,
@@ -70,7 +79,7 @@ if(nrow(resFilt) > 0){
                  maxGSSize = 800,
                  pvalueCutoff = 0.05,
                  verbose = TRUE,
-                 OrgDb = org.Hs.eg.db,
+                 OrgDb = genome,
                  pAdjustMethod = "fdr")
      }, error=function(e){NULL})
 } else {
