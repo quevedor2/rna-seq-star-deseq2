@@ -1,6 +1,6 @@
 import os
 import sys
-
+from snakemake.shell import shell
 
 # the reference_name argument is inferred by stripping the .seq suffix from
 # the output.seq value
@@ -19,5 +19,5 @@ log = sys.argv[3]
 shell(
     "rsem-prepare-reference --num-threads {snakemake.threads} {extra} "
     "{snakemake.input.reference_genome} {reference_name} > "
-    "{log} 2>&1"
+    "{log} 2>1"
 )
