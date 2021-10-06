@@ -67,6 +67,7 @@ rule calculate_expression:
   log:
     "logs/rsem/calculate_expression/{sample}-{unit}.log",
   shell:
+    "ref=$(echo {input.reference} | sed 's/\\..*//'); "
     "module load rsem/1.3.0; "
     "rsem-calculate-expression "
     "--num-threads 1 --bam "
@@ -74,7 +75,7 @@ rule calculate_expression:
     "--bam "
     "{params.paired_end} "
     "{input.bam} "
-    "{input.reference} "
+    "$ref "
     "{params.outprefix} "
     "> {log} 2>&1"
 
