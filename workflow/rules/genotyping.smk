@@ -26,27 +26,6 @@ rule replace_rg_se:
   wrapper:
     "v0.75.0/bio/picard/addorreplacereadgroups"
 
-rule index_se:
-  input:
-    get_rg_bam,
-  output:
-    "results/star/se/{sample}-{unit}/Aligned.rg.bam.bai",
-  log:
-    "logs/samtools/index/{sample}-{unit}.log"
-  wrapper:
-    "v0.75.0/bio/samtools/index"
-
-rule index_pe:
-  input:
-    get_rg_bam,
-  output:
-    "results/star/pe/{sample}-{unit}/Aligned.rg.bam.bai",
-  log:
-    "logs/samtools/index/{sample}-{unit}.log"
-  wrapper:
-    "v0.75.0/bio/samtools/index"
-
-
 rule collect_allelic_counts:
   input:
     bam=get_rg_bam,
