@@ -46,3 +46,23 @@ rule align_se:
     threads: 24
     wrapper:
         "v0.75.0/bio/star/align"
+
+rule index_coord:
+  input:
+    get_star_bam,
+  output:
+    "results/star/{ends}/{sample}-{unit}/Aligned.sortedByCoord.out.bam.bai",
+  log:
+    "logs/samtools/index/{sample}-{unit}.sortedByCoord.log"
+  wrapper:
+    "v0.75.0/bio/samtools/index"
+
+rule index_transcriptome:
+  input:
+    get_star_transcriptome,
+  output:
+    "results/star/{ends}/{sample}-{unit}/Aligned.toTranscriptome.out.bam.bai",
+  log:
+    "logs/samtools/index/{sample}-{unit}.toTranscriptome.log"
+  wrapper:
+    "v0.75.0/bio/samtools/index"

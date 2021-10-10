@@ -158,6 +158,15 @@ def get_star_transcriptome(wildcards):
         lib, wildcards.sample, wildcards.unit
     )
 
+def get_star_bai(wildcards):
+    if is_paired_end(wildcards.sample):
+        lib = "pe"
+    else:
+        lib = "se"
+    return "results/star/{}/{}-{}/Aligned.sortedByCoord.out.bam.bai".format(
+        lib, wildcards.sample, wildcards.unit
+    )
+
 def get_star_bam(wildcards):
     if is_paired_end(wildcards.sample):
         lib = "pe"

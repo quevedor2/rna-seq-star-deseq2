@@ -18,6 +18,7 @@ rule rseqc_gtf2bed:
 rule rseqc_junction_annotation:
     input:
         bam=get_star_bam,
+        bai=get_star_bai,
         bed="results/qc/rseqc/annotation.bed",
     output:
         "results/qc/rseqc/{sample}-{unit}.junctionanno.junction.bed",
@@ -37,6 +38,7 @@ rule rseqc_junction_annotation:
 rule rseqc_junction_saturation:
     input:
         bam=get_star_bam,
+        bai=get_star_bai,
         bed="results/qc/rseqc/annotation.bed",
     output:
         "results/qc/rseqc/{sample}-{unit}.junctionsat.junctionSaturation_plot.pdf",
@@ -56,6 +58,7 @@ rule rseqc_junction_saturation:
 rule rseqc_stat:
     input:
         get_star_bam,
+        bai=get_star_bai,
     output:
         "results/qc/rseqc/{sample}-{unit}.stats.txt",
     priority: 1
@@ -70,6 +73,7 @@ rule rseqc_stat:
 rule rseqc_infer:
     input:
         bam=get_star_bam,
+        bai=get_star_bai,
         bed="results/qc/rseqc/annotation.bed",
     output:
         "results/qc/rseqc/{sample}-{unit}.infer_experiment.txt",
@@ -85,6 +89,7 @@ rule rseqc_infer:
 rule rseqc_innerdis:
     input:
         bam=get_star_bam,
+        bai=get_star_bai,
         bed="results/qc/rseqc/annotation.bed",
     output:
         "results/qc/rseqc/{sample}-{unit}.inner_distance_freq.inner_distance.txt",
@@ -102,6 +107,7 @@ rule rseqc_innerdis:
 rule rseqc_readdis:
     input:
         bam=get_star_bam,
+        bai=get_star_bai,
         bed="results/qc/rseqc/annotation.bed",
     output:
         "results/qc/rseqc/{sample}-{unit}.readdistribution.txt",
@@ -117,6 +123,7 @@ rule rseqc_readdis:
 rule rseqc_readdup:
     input:
         get_star_bam,
+        bai=get_star_bai,
     output:
         "results/qc/rseqc/{sample}-{unit}.readdup.DupRate_plot.pdf",
     priority: 1
@@ -133,6 +140,7 @@ rule rseqc_readdup:
 rule rseqc_readgc:
     input:
         get_star_bam,
+        bai=get_star_bai,
     output:
         "results/qc/rseqc/{sample}-{unit}.readgc.GC_plot.pdf",
     priority: 1
