@@ -53,6 +53,6 @@ rule index_coord:
   output:
     "results/star/{ends}/{sample}-{unit}/Aligned.sortedByCoord.out.bam.bai",
   log:
-    "logs/samtools/index/{sample}-{unit}.sortedByCoord.log"
+    "logs/samtools/index/{sample}-{unit}.{ends}.sortedByCoord.log"
   wrapper:
     "v0.75.0/bio/samtools/index"
