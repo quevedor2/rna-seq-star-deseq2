@@ -3,6 +3,7 @@ sink(log)
 sink(log, type="message")
 
 library("DESeq2")
+library("org.Hs.eg.db")
 
 parallel <- FALSE
 if (snakemake@threads > 1) {
@@ -25,7 +26,7 @@ res <- res[order(res$padj),]
 
 
 # store results
-svg(snakemake@output[["ma_plot"]])
+pdf(snakemake@output[["ma_plot"]])
 plotMA(res, ylim=c(-2,2))
 dev.off()
 
