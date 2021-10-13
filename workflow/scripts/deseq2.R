@@ -29,4 +29,11 @@ svg(snakemake@output[["ma_plot"]])
 plotMA(res, ylim=c(-2,2))
 dev.off()
 
-write.table(data.frame("gene"=rownames(res),res), file=snakemake@output[["table"]], row.names=FALSE, sep='\t')
+# Map ENSEMBL IDs to HUGO Symbols
+# Create a reference map of ENSEMBL to SYMBOL
+txby <- keys(org.Hs.eg.db, 'ENSEMBL')
+gene_ids <- mapIds(org.Hs.eg.db, keys=txby, column='SYMBOL',
+                   keytype='ENSEMBL', multiVals="first")
+
+write.table(data.frame("gene"=rownames(res), "symbol"=gene_ids[rownames(res)], res),
+            file=snakemake@output[["table"]], row.names=FALSE, sep='\t')
