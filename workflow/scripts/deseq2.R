@@ -19,15 +19,17 @@ print(str(snakemake@params[['contrast']]))
 contrast <- c("condition", snakemake@params[["contrast"]])
 res <- results(dds, contrast=contrast, parallel=parallel)
 # shrink fold changes for lowly expressed genes
-res <- lfcShrink(dds, contrast=contrast, res=res, type="normal")
+reslfc <- lfcShrink(dds, contrast=contrast, type="apeglm")
 # sort by p-value
 res <- res[order(res$padj),]
+reslfc <- reslfc[order(reslfc$padj),]
 # TODO explore IHW usage
 
 
 # store results
 pdf(snakemake@output[["ma_plot"]])
 plotMA(res, ylim=c(-2,2))
+plotMA(reslfc, ylim=c(-2,2))
 dev.off()
 
 # Map ENSEMBL IDs to HUGO Symbols

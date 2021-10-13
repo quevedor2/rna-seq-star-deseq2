@@ -21,7 +21,7 @@ include: "rules/genotyping.smk"
 
 rule all:
     input:
-        "results/pca.svg",
+        "results/pca.pdf",
         #"../report/diffexp.rst",
         "results/deseq2/normcounts.tsv",
         "results/counts/all.tsv",

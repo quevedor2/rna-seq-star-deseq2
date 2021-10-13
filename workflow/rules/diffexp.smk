@@ -36,7 +36,7 @@ rule pca:
     input:
         "results/deseq2/all.rds",
     output:
-        report("results/pca.svg", "../report/pca.rst"),
+        report("results/pca.pdf", "../report/pca.rst"),
     params:
         pca_labels=config["pca"]["labels"],
     conda:
