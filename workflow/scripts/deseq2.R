@@ -19,7 +19,7 @@ print(str(snakemake@params[['contrast']]))
 contrast <- c("condition", snakemake@params[["contrast"]])
 res <- results(dds, contrast=contrast, parallel=parallel)
 # shrink fold changes for lowly expressed genes
-reslfc <- lfcShrink(dds, contrast=contrast, type="apeglm")
+reslfc <- lfcShrink(dds, contrast=contrast, type="normal")
 # sort by p-value
 res <- res[order(res$padj),]
 reslfc <- reslfc[order(reslfc$padj),]
