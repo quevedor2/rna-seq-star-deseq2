@@ -57,6 +57,7 @@ rule deseq2:
         ma_plot=report("results/diffexp/{contrast}.ma-plot.pdf", "../report/ma.rst"),
     params:
         contrast=get_contrast,
+        species=config['ref']['species'],
     conda:
         "../envs/deseq2.yaml"
     log:
