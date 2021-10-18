@@ -70,10 +70,10 @@ rule gsea:
         "results/diffexp/{contrast}.diffexp.tsv",
     output:
         gseakegg_table="results/gsea/{contrast}.gsea-kegg.tsv",
-        gseakegg_pdf="results/gsea/{contrast}.gsea-kegg.pdf",
+        gseakegg_pdf=report("results/gsea/{contrast}.gsea-kegg.pdf", "../report/gsea-kegg.rst")
         gseago_table="results/gsea/{contrast}.gsea-go.tsv",
-        gseago_pdf="results/gsea/{contrast}.gsea-go.pdf",
-        go="results/gsea/{contrast}.go.tsv",
+        gseago_pdf=report("results/gsea/{contrast}.gsea-go.pdf", "../report/gsea-go.rst"),
+        go=report("results/gsea/{contrast}.go.tsv", "../report/ora-go.rst"),
     params:
         genome=config['ref']['species'],
         contrast=get_contrast,
