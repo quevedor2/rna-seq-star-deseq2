@@ -37,7 +37,7 @@ dev.off()
 if(snakemake@params[["species"]] == 'homo_sapiens'){
   library("org.Hs.eg.db")
   genome <- org.Hs.eg.db
-else if(snakemake@params[["species"]] == 'mus_musculus'){
+} else if(snakemake@params[["species"]] == 'mus_musculus'){
   library("org.Mm.eg.db")
   genome <- org.Mm.eg.db
 } else {
