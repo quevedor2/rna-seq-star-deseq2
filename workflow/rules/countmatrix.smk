@@ -105,6 +105,7 @@ rule rsem_generate_data_matrix:
     "rsem-generate-data-matrix {params.extra} "
     "{input} > {output} 2>{log}"
 
+## Need to make this rule more robust for non-merged unit0-names
 rule format_data_matrix:
   input:
     "results/counts/all.tmp",
