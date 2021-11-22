@@ -35,7 +35,7 @@ gene_ids <- mapIds(genome, keys=txby, column='ENTREZID',
                    keytype='ENSEMBL', multiVals="first")
 
 ## Read gene expr and DEG
-res <- read.table(input, sep="\t",
+res <- read.table(snakemake@input[[1]], sep="\t",
                   header=TRUE, stringsAsFactors = FALSE, check.names = FALSE)
 rownames(res) <- res$gene
 
