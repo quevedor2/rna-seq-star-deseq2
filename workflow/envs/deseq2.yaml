@@ -10,6 +10,7 @@ dependencies:
   - bioconductor-org.mm.eg.db
   - bioconductor-kegg.db
   - bioconductor-go.db
+  - r-msigdbr
   - bioconductor-clusterprofiler
   - bioconductor-enrichplot
   - bioconductor-category
