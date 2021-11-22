@@ -53,7 +53,7 @@ msig_lvls <- list('H'=list(NULL),                       # hallmark gene sets
                   'C6'=list(NULL),                      # oncogenic signature gene sets
                   'C7'=list('IMMUNESIGDB'),             # immunologic signature gene sets
                   'C8'=list(NULL))                      # cell type signature gene sets
-ora_gra <- lapply(names(msig_lvls)[5:7], function(mlvl){
+ora_gra <- lapply(names(msig_lvls), function(mlvl){
   sub_ora_gra <- lapply(msig_lvls[[mlvl]], function(sublvl){
     print(paste0(">", mlvl, ":", sublvl, "..."))
     msig_ds <- msigdbr(species = species, category = mlvl, subcategory = sublvl) %>% 
