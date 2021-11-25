@@ -3,6 +3,7 @@ sink(log)
 sink(log, type="message")
 
 library("DESeq2")
+library("ggplot2")
 
 # load deseq2 data
 dds <- readRDS(snakemake@input[[1]])
