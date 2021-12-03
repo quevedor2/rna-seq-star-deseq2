@@ -117,3 +117,29 @@ rule format_data_matrix:
     "sed 's/-merged.genes.results//g' | "
     "sed '1 s/^/gene/' | "
     "sed -e 's/\.[0-9]*//g' > {output}"
+
+rule rsem_generate_tpm_matrix:
+  input:
+    get_rsem_output_all_units,
+  output:
+    temp("results/counts/all_tpm.tmp"),
+  params:
+    extra="TPM",
+  log:
+    "logs/rsem/generate_data_matrix.log",
+  shell:
+    "module load rsem/1.3.0; "
+    "python ../scripts/rsem-generate-data-matrix-modified.py {params.extra} "
+    "{input} > {output} 2>{log}"
+
+rule format_tpm_matrix:
+  input:
+    "results/counts/all_tpm.tmp",
+  output:
+    "results/counts/all_tpm.tsv",
+  shell:
+    "sed 's/\"//g' {input} |  "
+    "sed 's/results\/rsem\///g' | "
+    "sed 's/-merged.genes.results//g' | "
+    "sed '1 s/^/gene/' | "
+    "sed -e 's/\.[0-9]*//g' > {output}"
