@@ -129,7 +129,7 @@ rule rsem_generate_tpm_matrix:
     "logs/rsem/generate_data_matrix.log",
   shell:
     "module load rsem/1.3.0; "
-    "python scripts/rsem-generate-data-matrix-modified.py {params.extra} "
+    "perl scripts/rsem-generate-data-matrix-modified.py {params.extra} "
     "{input} > {output} 2>{log}"
 
 rule format_tpm_matrix:
