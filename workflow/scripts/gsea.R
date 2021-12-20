@@ -3,8 +3,6 @@ sink(log)
 sink(log, type="message")
 
 library("DESeq2")
-library("KEGG.db")
-library("GO.db")
 library("Category")
 library("GOstats")
 
@@ -12,6 +10,7 @@ library("clusterProfiler")
 library("enrichplot")
 library("ggplot2")
 library("msigdbr")
+library("dplyr")
 
 
 # Create a reference map of ENSEMBL to SYMBOL
@@ -56,44 +55,66 @@ msig_lvls <- list('H'=list(NULL),                       # hallmark gene sets
 ora_gra <- lapply(names(msig_lvls), function(mlvl){
   sub_ora_gra <- lapply(msig_lvls[[mlvl]], function(sublvl){
     print(paste0(">", mlvl, ":", sublvl, "..."))
-    msig_ds <- msigdbr(species = species, category = mlvl, subcategory = sublvl) %>% 
-      dplyr::select(gs_name, entrez_gene) %>% 
+    msig_ds <- msigdbr(species = species, category = mlvl, subcategory = sublvl) %>%
+      dplyr::select(gs_name, entrez_gene) %>%
       as.data.frame()
-    
+
     # overrepresentation analysis
     sig_ora <- tryCatch({
       enricher(gene = na.omit(gene_ids[resSig$gene]), TERM2GENE = msig_ds)@result
     }, error=function(e){NULL})
-    
-    
-    
+
+
+
     # GSEA analysis
-    lfc_v <- setNames(resFilt$log2FoldChange, 
+    lfc_v <- setNames(resFilt$log2FoldChange,
                       gene_ids[resFilt$gene])
     msig_gsea <- tryCatch({
       GSEA(sort(na.omit(lfc_v), decreasing = T), TERM2GENE = msig_ds, pvalueCutoff = 1)
     })
     msig_gsea_df <- as.data.frame(msig_gsea)[,1:10]
-    
-    
+
+
+    gsea_bp <- msig_gsea %>%
+      mutate(direction=NES>0) %>%
+      group_by(direction) %>%
+      slice(1:15) %>%
+      enrichplot:::barplot.enrichResult(x='NES', showCategory=40) +
+        theme(text = element_text(size=8),
+        axis.text.y = element_text(size=8))  +
+        xlim(-6,6) +
+        xlab("NES") + theme_bw()
+
+    msig_gseax <- setReadable(msig_gsea, annotation, 'ENTREZID')
+    colors <- c('navyblue', 'lightgrey', 'darkred')
+    maxval <- max(abs(lfc_v))
+    b <- c(-ceiling(maxval), 0, ceiling(maxval))
+    gsea_heat <- msig_gseax %>%
+      heatplot(showCategory=20, foldChange=lfc_v) +
+      theme_bw() +
+      scale_fill_gradientn(limits = c(min(b),max(b)), colors = colors,
+                           breaks = b, labels = format(b)) +
+      theme(axis.text.x = element_text(angle = 70, vjust = 1, hjust=1))
+
+
     ## network of similar terms
     n <- sum(msig_gsea@result$pvalue < 0.05)
     if(n > 25) n <- 25
     if(n < 5) n <- 5
     emap <- emapplot(pairwise_termsim(msig_gsea), showCategory = n)
-    
+
     ## Dotplot of upregulate and downregulated terms
-    dp <- dotplot(msig_gsea, showCategory = n, title = "Enriched Pathways" , split=".sign") +
-      facet_grid(.~.sign)
-    
+    #dp <- dotplot(msig_gsea, showCategory = n, title = "Enriched Pathways" , split=".sign") +
+    #  facet_grid(.~.sign)
+
     ## GSEA-type plot of terms
-    gg_gsea <- gseaplot2(msig_gsea, geneSetID = head(msig_gsea@result$ID,n))
-    
+    #gg_gsea <- gseaplot2(msig_gsea, geneSetID = head(msig_gsea@result$ID,n))
+
     ## GSEA-type plot of terms
-    ridge <- ridgeplot(msig_gsea, showCategory = n) + labs(x = "enrichment distribution")
-    
-    
-    return(list("gsea-viz"=list(emap, dp, gg_gsea, ridge),
+    #ridge <- ridgeplot(msig_gsea, showCategory = n) + labs(x = "enrichment distribution")
+
+
+    return(list("gsea-viz"=list(gsea_bp, gsea_heat, emap), ### dp, gg_gsea, ridge),
                 "gsea-tbl"=msig_gsea_df,
                 "ora-tbl"=sig_ora))
   })
@@ -114,14 +135,14 @@ dev.off()
 
 # Write out the GSEA table
 gsea_tbl <- do.call(rbind, lapply(ora_gra, function(i) i$`gsea-tbl`))
-gsea_tbl <- as.data.frame(gsea_tbl) 
+gsea_tbl <- as.data.frame(gsea_tbl)
 gsea_tbl$msig_lvl <- gsub("^(.*?)\\..*", "\\1", rownames(gsea_tbl))
 write.table(gsea_tbl, file=snakemake@output[["gsea_tbl"]],
             sep="\t", col.names=TRUE, row.names=FALSE, quote=FALSE)
 
 # Write out the over-representation analysis table
 ora_tbl <- do.call(rbind, lapply(ora_gra, function(i) i$`ora-tbl`))
-ora_tbl <- as.data.frame(ora_tbl) 
+ora_tbl <- as.data.frame(ora_tbl)
 ora_tbl$msig_lvl <- gsub("^(.*?)\\..*", "\\1", rownames(ora_tbl))
 write.table(ora_tbl, file=snakemake@output[["ora_tbl"]],
             sep="\t", col.names=TRUE, row.names=FALSE, quote=FALSE)
