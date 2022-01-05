@@ -5,6 +5,7 @@ channels:
 dependencies:
   - bioconductor-deseq2 =1.30.0
   - bioconductor-apeglm =1.12.0
+  - r-immunedeconv =2.0.3
   - r-rvcheck =0.1.8
   - bioconductor-org.hs.eg.db
   - bioconductor-org.mm.eg.db
