@@ -153,6 +153,39 @@ rule rseqc_readgc:
     shell:
         "read_GC.py -i {input} -o {params.prefix} > {log} 2>&1"
 
+rule rseqc_readnvc:
+    input:
+        bam=get_star_bam,
+        bai=get_star_bai,
+    output:
+        "results/qc/rseqc/{sample}-{unit}.read_nvc.NVC_plot.pdf",
+    priority: 1
+    log:
+        "logs/rseqc/rseqc_readnvc/{sample}-{unit}.log",
+    params:
+        prefix=lambda w, output: output[0].replace(".NVC_plot.pdf", ""),
+    conda:
+        "../envs/rseqc.yaml"
+    shell:
+        "read_NVC.py -i {input.bam} -o {params.prefix} > {log} 2>&1"
+
+
+rule rseqc_rpkmsaturation:
+    input:
+        bam=get_star_bam,
+        bai=get_star_bai,
+        bed="results/qc/rseqc/annotation.bed",
+    output:
+        "results/qc/rseqc/{sample}-{unit}.rpkmsaturation.saturation.pdf",
+    priority: 1
+    log:
+        "logs/rseqc/rseqc_rpkmsaturation/{sample}-{unit}.log",
+    params:
+        prefix=lambda w, output: output[0].replace(".saturation.pdf", ""),
+    conda:
+        "../envs/rseqc.yaml"
+    shell:
+        "RPKM_saturation.py -r {input.bed} -i {input.bam} -o {params.prefix} > {log} 2>&1"
 
 rule multiqc:
     input:
@@ -191,6 +224,14 @@ rule multiqc:
         ),
         expand(
             "logs/rseqc/rseqc_junction_annotation/{unit.sample_name}-{unit.unit_name}.log",
+            unit=units.itertuples(),
+        ),
+        expand(
+            "results/qc/rseqc/{unit.sample_name}-{unit.unit_name}.read_nvc.NVC_plot.pdf",
+            unit=units.itertuples(),
+        ),
+        expand(
+            "results/qc/rseqc/{unit.sample_name}-{unit.unit_name}.rpkmsaturation.saturation.pdf",
             unit=units.itertuples(),
         ),
     output:
