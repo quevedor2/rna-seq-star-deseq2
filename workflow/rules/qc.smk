@@ -251,6 +251,10 @@ rule multiqc:
             "results/qc/rseqc/{unit.sample_name}-{unit.unit_name}_rpkmsaturation.saturation.pdf",
             unit=units.itertuples(),
         ),
+        expand(
+            "results/qc/rseqc/{unit.sample_name}-{unit.unit_name}_genebodycoverage.curves.pdf",
+            unit=units.itertuples(),
+        ),
     output:
         "results/qc/multiqc_report.html",
     log:
