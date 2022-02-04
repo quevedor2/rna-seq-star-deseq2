@@ -187,6 +187,23 @@ rule rseqc_rpkmsaturation:
     shell:
         "RPKM_saturation.py -r {input.bed} -i {input.bam} -o {params.prefix} > {log} 2>&1"
 
+rule rseqc_genebodycoverage:
+    input:
+        bam=get_star_bam,
+        bai=get_star_bai,
+    output:
+        "results/qc/rseqc/{sample}-{unit}_genebodycoverage.curves.pdf",
+    priority: 1
+    log:
+        "logs/rseqc/rseqc_genebodycoverage/{sample}-{unit}.log",
+    params:
+        housekeeping=config["rseqc"]["housekeeping_genes"],
+        prefix=lambda w, output: output[0].replace(".curves.pdf", ""),
+    conda:
+        "../envs/rseqc.yaml"
+    shell:
+        "geneBody_coverage.py -r {params.housekeeping} -i {input.bam} -o {params.prefix} > {log} 2>&1"
+
 rule multiqc:
     input:
         lambda wc: get_star_output_all_units(wc, fi="bam"),
