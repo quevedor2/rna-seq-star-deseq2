@@ -176,7 +176,7 @@ rule rseqc_rpkmsaturation:
         bai=get_star_bai,
         bed="results/qc/rseqc/annotation.bed",
     output:
-        "results/qc/rseqc/{sample}-{unit}.rpkmsaturation.saturation.pdf",
+        "results/qc/rseqc/{sample}-{unit}_rpkmsaturation.saturation.pdf",
     priority: 1
     log:
         "logs/rseqc/rseqc_rpkmsaturation/{sample}-{unit}.log",
@@ -231,7 +231,7 @@ rule multiqc:
             unit=units.itertuples(),
         ),
         expand(
-            "results/qc/rseqc/{unit.sample_name}-{unit.unit_name}.rpkmsaturation.saturation.pdf",
+            "results/qc/rseqc/{unit.sample_name}-{unit.unit_name}_rpkmsaturation.saturation.pdf",
             unit=units.itertuples(),
         ),
     output:
