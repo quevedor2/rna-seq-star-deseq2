@@ -192,7 +192,7 @@ rule rseqc_genebodycoverage:
         bam=get_star_bam,
         bai=get_star_bai,
     output:
-        "results/qc/rseqc/{sample}-{unit}_genebodycoverage.curves.pdf",
+        "results/qc/rseqc/{sample}-{unit}_genebodycoverage.geneBodyCoverage.curves.pdf",
     priority: 1
     log:
         "logs/rseqc/rseqc_genebodycoverage/{sample}-{unit}.log",
@@ -252,7 +252,7 @@ rule multiqc:
             unit=units.itertuples(),
         ),
         expand(
-            "results/qc/rseqc/{unit.sample_name}-{unit.unit_name}_genebodycoverage.curves.pdf",
+            "results/qc/rseqc/{unit.sample_name}-{unit.unit_name}_genebodycoverage.geneBodyCoverage.curves.pdf",
             unit=units.itertuples(),
         ),
     output:
