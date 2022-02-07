@@ -1,0 +1,5 @@
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - perl ==5.26.2
