@@ -28,7 +28,7 @@ rule replace_rg_se:
 
 rule collect_allelic_counts:
   input:
-    bam=bam=get_star_bam,,
+    bam=get_star_bam,
     bai=get_star_bai,
   output:
     "results/genotyping/{sample}-{unit}.allelicCounts.tsv",
@@ -72,6 +72,7 @@ rule aggregate_AD:
         expand(
             "results/genotyping/{unit.sample_name}-{unit.unit_name}_out.tsv",
             unit=units.itertuples(),
+        ),
   output:
     "results/zygosity/AD/aggregate.csv",
   params:
