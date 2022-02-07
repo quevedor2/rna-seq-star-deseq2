@@ -28,8 +28,8 @@ rule replace_rg_se:
 
 rule collect_allelic_counts:
   input:
-    bam=get_rg_bam,
-    bai=get_rg_bai,
+    bam=bam=get_star_bam,,
+    bai=get_star_bai,
   output:
     "results/genotyping/{sample}-{unit}.allelicCounts.tsv",
   conda:
@@ -51,10 +51,10 @@ rule collect_allelic_counts:
 
 rule categorizeAD_gatk:
   input:
-    "results/zygosity/counts/{sample}.allelicCounts.tsv",
+    "results/genotyping/{sample}-{unit}.allelicCounts.tsv",
   output:
-    intermediate=temp("results/zygosity/counts/{sample}_out.tmp"),
-    simple=temp("results/zygosity/counts/{sample}_out.tsv"),
+    intermediate=temp("results/genotyping/{sample}-{unit}_out.tmp"),
+    simple=temp("results/genotyping/{sample}-{unit}_out.tsv"),
   params:
     ref=2,
     alt=3,
@@ -68,7 +68,10 @@ rule categorizeAD_gatk:
 
 rule aggregate_AD:
   input:
-    expand("results/zygosity/counts/{sample}_out.tsv", sample=samples.index),
+    lambda wc: get_star_output_all_units(wc, fi="bam"),
+        expand(
+            "results/genotyping/{unit.sample_name}-{unit.unit_name}_out.tsv",
+            unit=units.itertuples(),
   output:
     "results/zygosity/AD/aggregate.csv",
   params:
