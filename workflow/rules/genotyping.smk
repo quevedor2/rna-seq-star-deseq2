@@ -40,7 +40,7 @@ rule collect_allelic_counts:
     "touch {output}; "
     "echo {input.bam} > {log}; "
     "echo {input.bai} >> {log}; "
-    "gatk --java-options '-Xmx20G  -XX:ParallelGCThreads=4' CollectAllelicCounts "
+    "gatk --java-options '-Xmx30G  -XX:ParallelGCThreads=1' CollectAllelicCounts "
     "-I {input.bam} "
     "-R {params.ref} "
     "-L {params.target} "
