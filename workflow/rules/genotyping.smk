@@ -1,7 +1,6 @@
 rule replace_rg:
   input:
-    bam=get_star_bam,
-    bai=get_star_bai,
+    get_star_bam
   output:
     "results/star/rg/{sample}-{unit}/Aligned.rg.bam",
   log:
