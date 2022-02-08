@@ -177,21 +177,13 @@ def get_star_bam(wildcards):
     )
 
 def get_rg_bam(wildcards):
-    if is_paired_end(wildcards.sample):
-        lib = "pe"
-    else:
-        lib = "se"
-    return "results/star/{}/{}-{}/Aligned.rg.bam".format(
-        lib, wildcards.sample, wildcards.unit
+    return "results/star/rg/{}-{}/Aligned.rg.bam".format(
+        wildcards.sample, wildcards.unit
     )
 
 def get_rg_bai(wildcards):
-    if is_paired_end(wildcards.sample):
-        lib = "pe"
-    else:
-        lib = "se"
-    return "results/star/{}/{}-{}/Aligned.rg.bam.bai".format(
-        lib, wildcards.sample, wildcards.unit
+    return "results/star/rg/{}-{}/Aligned.rg.bam.bai".format(
+        wildcards.sample, wildcards.unit
     )
 
 def get_strandedness(units):
