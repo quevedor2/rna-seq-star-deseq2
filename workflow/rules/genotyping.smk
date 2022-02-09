@@ -39,7 +39,7 @@ rule collect_allelic_counts:
     "touch {output}; "
     "echo {input.bam} > {log}; "
     "echo {input.bai} >> {log}; "
-    "gatk --java-options '-Xmx30G  -XX:ParallelGCThreads=1' CollectAllelicCounts "
+    "gatk --java-options '-Xmx50G  -XX:ParallelGCThreads=1' CollectAllelicCounts "
     "-I {input.bam} "
     "-R {params.ref} "
     "-L {params.target} "
@@ -58,17 +58,16 @@ rule categorizeAD_gatk:
     "../envs/perl.yaml",
   shell:
     "grep -v '^@' {input} | tail -n +2 > {output.intermediate}; "
-    "perl workflow/scripts/allelic_count_helper.pl categorize "
+    "perl ../scripts/allelic_count_helper.pl categorize "
     "{output.intermediate} {params.ref} {params.alt} > {output.simple}"
 
 
 rule aggregate_AD:
   input:
-    lambda wc: get_star_output_all_units(wc, fi="bam"),
-        expand(
-            "results/genotyping/{unit.sample_name}-{unit.unit_name}_out.tsv",
-            unit=units.itertuples(),
-        ),
+    expand(
+        "results/genotyping/{unit.sample_name}-{unit.unit_name}_out.tsv",
+        unit=units.itertuples(),
+    ),
   output:
     "results/zygosity/AD/aggregate.csv",
   params:
