@@ -87,7 +87,7 @@ rule get_AD_lines:
   conda:
     "../envs/perl.yaml",
   shell:
-    "perl workflow/scripts/allelic_count_helper.pl setlines "
+    "perl scripts/allelic_count_helper.pl setlines "
     "{input} {params.min_n} > {output}; "
 
 rule filt_AD_raw:
@@ -97,12 +97,16 @@ rule filt_AD_raw:
   output:
     "results/zygosity/AD/aggregate_filt.csv",
   params:
-    samples=expand("{sample}", sample=samples.index),
+    samples=expand(
+        "{unit.sample_name}-{unit.unit_name}",
+        unit=units.itertuples(),
+    ),
+    expand("{sample}", sample=samples.index),
   conda:
     "../envs/perl.yaml",
   shell:
     "echo {params.samples} | sed 's/\s/,/g' > {output}; "
-    "perl workflow/scripts/allelic_count_helper.pl getlines "
+    "perl scripts/allelic_count_helper.pl getlines "
     "{input.filt_lines} {input.aggregate_raw} >> {output}; "
 
 rule filt_AD_dbsnp:
@@ -115,7 +119,7 @@ rule filt_AD_dbsnp:
   conda:
     "../envs/perl.yaml",
   shell:
-    "perl workflow/scripts/allelic_count_helper.pl getlines "
+    "perl scripts/allelic_count_helper.pl getlines "
     "{input.filt_lines} {params.target} > {output}; "
 
 rule run_wp_zygosity:
