@@ -10,7 +10,7 @@
 #    Will take the output from the `setlines` analysis as <filename>,
 #    and will extract those lines from the target file as <filename2>
 #
-# perl allelic_count_helper.pl categorize <filename> <ref_col> <alt_col>
+# perl allelic_count_helper.pl categorize <filename> <ref_col> <alt_col> <min_cov>
 #    Will go through the GATK CollectAllelicCount outpt per sample
 #    and classify the Ref/Alt counts as either REFHOM (1), HET (2),
 #    or ALTHOM(3).
@@ -31,7 +31,7 @@ sub GetCovLines {
 }
 
 sub CategorizeAD {
-  my($dat, $ref_col, $alt_col) = @_;
+  my($dat, $ref_col, $alt_col, $min_cov) = @_;
 
   my @spl=split(/\s/, $dat);
   my $ref = $spl[$ref_col];
@@ -39,7 +39,7 @@ sub CategorizeAD {
 
   ## Categorize the depth per SNP
   my $sums = $ref + $alt;
-  if($sums == 0){
+  if($sums <= $min_cov){
     print "0\n"; ## NO COVERAGE
   } else {
     my $frac = $ref / $sums;
@@ -55,7 +55,7 @@ sub CategorizeAD {
 
 
 #### main ####
-my ($analysis, $filename, $wild, $alt_col) = @ARGV;
+my ($analysis, $filename, $wild, $alt_col, $min_cov) = @ARGV;
 open(FH, "<", $filename) or die $!;
 
 if($analysis eq 'getlines'){
@@ -75,7 +75,7 @@ if($analysis eq 'getlines'){
     if($analysis eq 'setlines'){
       my $x = GetCovLines($_, $line, $wild);
     } elsif($analysis eq 'categorize'){
-      my $x = CategorizeAD($_, $wild, $alt_col);
+      my $x = CategorizeAD($_, $wild, $alt_col, $min_cov);
     }
     $line++;
   }

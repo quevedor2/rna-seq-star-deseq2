@@ -54,12 +54,13 @@ rule categorizeAD_gatk:
   params:
     ref=2,
     alt=3,
+    mincov=10,
   conda:
     "../envs/perl.yaml",
   shell:
     "grep -v '^@' {input} | tail -n +2 > {output.intermediate}; "
     "perl scripts/allelic_count_helper.pl categorize "
-    "{output.intermediate} {params.ref} {params.alt} > {output.simple}"
+    "{output.intermediate} {params.ref} {params.alt} {params.mincov} > {output.simple}"
 
 
 rule aggregate_AD:
@@ -101,7 +102,6 @@ rule filt_AD_raw:
         "{unit.sample_name}-{unit.unit_name}",
         unit=units.itertuples(),
     ),
-    expand("{sample}", sample=samples.index),
   conda:
     "../envs/perl.yaml",
   shell:
