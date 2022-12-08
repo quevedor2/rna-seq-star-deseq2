@@ -23,13 +23,19 @@ rule deseq2_init:
     params:
         samples=config["samples"],
         model=config["diffexp"]["model"],
-    conda:
-        "../envs/deseq2.yaml"
+        conda=config['env']['conda_shell'],
+        env=directory(config['env']['r41']),
+#    conda:
+#        "../envs/deseq2.yaml"
     log:
         "logs/deseq2/init.log",
     threads: get_deseq2_threads()
     script:
-        "../scripts/deseq2-init.R"
+        """
+        source {params.conda} && conda activate {params.env};
+        
+        ../scripts/deseq2-init.R
+        """
 
 
 rule pca:
@@ -39,12 +45,18 @@ rule pca:
         report("results/pca.pdf", "../report/pca.rst"),
     params:
         pca_labels=config["pca"]["labels"],
-    conda:
-        "../envs/deseq2.yaml"
+        conda=config['env']['conda_shell'],
+        env=directory(config['env']['r41']),
+#    conda:
+#        "../envs/deseq2.yaml"
     log:
         "logs/pca.log",
     script:
-        "../scripts/plot-pca.R"
+        """
+        source {params.conda} && conda activate {params.env};
+        
+        ../scripts/plot-pca.R
+        """
 
 
 rule deseq2:
@@ -58,13 +70,19 @@ rule deseq2:
     params:
         contrast=get_contrast,
         species=config['ref']['species'],
-    conda:
-        "../envs/deseq2.yaml"
+        conda=config['env']['conda_shell'],
+        env=directory(config['env']['r41']),
+#    conda:
+#        "../envs/deseq2.yaml"
     log:
         "logs/deseq2/{contrast}.diffexp.log",
     threads: get_deseq2_threads
     script:
-        "../scripts/deseq2.R"
+        """
+        source {params.conda} && conda activate {params.env};
+        
+        ../scripts/deseq2.R
+        """
 
 rule gsea:
     input:
@@ -78,10 +96,16 @@ rule gsea:
         contrast=get_contrast,
         minbase=config["gsea"]["min_base_mean"],
         maxp=config["gsea"]["max_p"],
+        conda=config['env']['conda_shell'],
+        env=directory(config['env']['r41']),
     conda:
         "../envs/deseq2.yaml"
     log:
         "logs/gsea/{contrast}.log",
     threads: get_deseq2_threads
     script:
-        "../scripts/gsea.R"
+        """
+        source {params.conda} && conda activate {params.env};
+        
+        ../scripts/gsea.R
+        """
