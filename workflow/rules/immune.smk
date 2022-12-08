@@ -12,7 +12,13 @@ rule immunedeconv:
     params:
         cibersort_path=config["immune"]["cibersort_path"],
         mcp_path=config["immune"]["mcp_path"],
-    conda:
-        "../envs/deseq2.yaml"
+        conda=config['env']['conda_shell'],
+        env=directory(config['env']['r41']),
+#    conda:
+#        "../envs/deseq2.yaml"
     script:
-        "../scripts/immunedeconv.R"
+        """
+        source {params.conda} && conda activate {params.env};
+        
+        ../scripts/immunedeconv.R
+        """

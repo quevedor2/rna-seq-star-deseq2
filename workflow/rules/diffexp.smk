@@ -98,8 +98,8 @@ rule gsea:
         maxp=config["gsea"]["max_p"],
         conda=config['env']['conda_shell'],
         env=directory(config['env']['r41']),
-    conda:
-        "../envs/deseq2.yaml"
+#    conda:
+#        "../envs/deseq2.yaml"
     log:
         "logs/gsea/{contrast}.log",
     threads: get_deseq2_threads
