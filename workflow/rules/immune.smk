@@ -3,7 +3,7 @@ rule immunedeconv:
         "results/counts/all_tpm.tsv",
     output:
         mcp="results/immune/mcp.pdf",
-        quantiseq="results/immune/mcp.pdf",
+        quantiseq="results/immune/quantiseq.pdf",
         cibersort="results/immune/cibersort.pdf",
         aggregate="results/immune/aggregate.pdf",
         rds="results/immune/immunedeconv.rds"
