@@ -41,3 +41,13 @@ def get_fq2(wildcards):
     """Get raw FASTQ files from unit sheet."""
     u = units.loc[ (wildcards.sample), ["fq1", "fq2"] ].dropna()
     return [ f"{u.fq2}" ]
+
+def get_rsem_output_all_units(wildcards):
+    res = []
+    for unit in units.itertuples():
+        res.append(
+            "results/rsem/{}.genes.results".format(
+                unit.sample_name
+            )
+        )
+    return res

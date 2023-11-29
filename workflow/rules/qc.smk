@@ -17,8 +17,8 @@ rule rseqc_gtf2bed:
 
 rule rseqc_junction_annotation:
     input:
-        bam=get_star_bam,
-        bai=get_star_bai,
+        bam="results/star/pe/{sample}/Aligned.sortedByCoord.out.bam",
+        bai="results/star/pe/{sample}/Aligned.sortedByCoord.out.bam.bai",
         bed="results/qc/rseqc/annotation.bed",
     output:
         "results/qc/rseqc/{sample}.junctionanno.junction.bed",
@@ -37,8 +37,8 @@ rule rseqc_junction_annotation:
 
 rule rseqc_junction_saturation:
     input:
-        bam=get_star_bam,
-        bai=get_star_bai,
+        bam="results/star/pe/{sample}/Aligned.sortedByCoord.out.bam",
+        bai="results/star/pe/{sample}/Aligned.sortedByCoord.out.bam.bai",
         bed="results/qc/rseqc/annotation.bed",
     output:
         "results/qc/rseqc/{sample}.junctionsat.junctionSaturation_plot.pdf",
@@ -57,8 +57,8 @@ rule rseqc_junction_saturation:
 
 rule rseqc_stat:
     input:
-        get_star_bam,
-        bai=get_star_bai,
+        bam="results/star/pe/{sample}/Aligned.sortedByCoord.out.bam",
+        bai="results/star/pe/{sample}/Aligned.sortedByCoord.out.bam.bai",
     output:
         "results/qc/rseqc/{sample}.stats.txt",
     priority: 1
@@ -67,13 +67,13 @@ rule rseqc_stat:
     conda:
         "../envs/rseqc.yaml"
     shell:
-        "bam_stat.py -i {input} > {output} 2> {log}"
+        "bam_stat.py -i {input.bam} > {output} 2> {log}"
 
 
 rule rseqc_infer:
     input:
-        bam=get_star_bam,
-        bai=get_star_bai,
+        bam="results/star/pe/{sample}/Aligned.sortedByCoord.out.bam",
+        bai="results/star/pe/{sample}/Aligned.sortedByCoord.out.bam.bai",
         bed="results/qc/rseqc/annotation.bed",
     output:
         "results/qc/rseqc/{sample}.infer_experiment.txt",
@@ -88,8 +88,8 @@ rule rseqc_infer:
 
 rule rseqc_innerdis:
     input:
-        bam=get_star_bam,
-        bai=get_star_bai,
+        bam="results/star/pe/{sample}/Aligned.sortedByCoord.out.bam",
+        bai="results/star/pe/{sample}/Aligned.sortedByCoord.out.bam.bai",
         bed="results/qc/rseqc/annotation.bed",
     output:
         "results/qc/rseqc/{sample}.inner_distance_freq.inner_distance.txt",
@@ -106,8 +106,8 @@ rule rseqc_innerdis:
 
 rule rseqc_readdis:
     input:
-        bam=get_star_bam,
-        bai=get_star_bai,
+        bam="results/star/pe/{sample}/Aligned.sortedByCoord.out.bam",
+        bai="results/star/pe/{sample}/Aligned.sortedByCoord.out.bam.bai",
         bed="results/qc/rseqc/annotation.bed",
     output:
         "results/qc/rseqc/{sample}.readdistribution.txt",
@@ -122,8 +122,8 @@ rule rseqc_readdis:
 
 rule rseqc_readdup:
     input:
-        get_star_bam,
-        bai=get_star_bai,
+        bam="results/star/pe/{sample}/Aligned.sortedByCoord.out.bam",
+        bai="results/star/pe/{sample}/Aligned.sortedByCoord.out.bam.bai",
     output:
         "results/qc/rseqc/{sample}.readdup.DupRate_plot.pdf",
     priority: 1
@@ -134,13 +134,13 @@ rule rseqc_readdup:
     conda:
         "../envs/rseqc.yaml"
     shell:
-        "read_duplication.py -i {input} -o {params.prefix} > {log} 2>&1"
+        "read_duplication.py -i {input.bam} -o {params.prefix} > {log} 2>&1"
 
 
 rule rseqc_readgc:
     input:
-        get_star_bam,
-        bai=get_star_bai,
+        "results/star/pe/{sample}/Aligned.sortedByCoord.out.bam",
+        bai="results/star/pe/{sample}/Aligned.sortedByCoord.out.bam.bai",
     output:
         "results/qc/rseqc/{sample}.readgc.GC_plot.pdf",
     priority: 1
@@ -155,8 +155,8 @@ rule rseqc_readgc:
 
 rule rseqc_readnvc:
     input:
-        bam=get_star_bam,
-        bai=get_star_bai,
+        bam="results/star/pe/{sample}/Aligned.sortedByCoord.out.bam",
+        bai="results/star/pe/{sample}/Aligned.sortedByCoord.out.bam.bai",
     output:
         "results/qc/rseqc/{sample}.read_nvc.NVC_plot.pdf",
     priority: 1
@@ -172,8 +172,8 @@ rule rseqc_readnvc:
 
 rule rseqc_rpkmsaturation:
     input:
-        bam=get_star_bam,
-        bai=get_star_bai,
+        bam="results/star/pe/{sample}/Aligned.sortedByCoord.out.bam",
+        bai="results/star/pe/{sample}/Aligned.sortedByCoord.out.bam.bai",
         bed="results/qc/rseqc/annotation.bed",
     output:
         "results/qc/rseqc/{sample}_rpkmsaturation.saturation.pdf",
@@ -189,8 +189,8 @@ rule rseqc_rpkmsaturation:
 
 rule rseqc_genebodycoverage:
     input:
-        bam=get_star_bam,
-        bai=get_star_bai,
+        bam="results/star/pe/{sample}/Aligned.sortedByCoord.out.bam",
+        bai="results/star/pe/{sample}/Aligned.sortedByCoord.out.bam.bai",
     output:
         "results/qc/rseqc/{sample}_genebodycoverage.geneBodyCoverage.curves.pdf",
     priority: 1

@@ -53,7 +53,7 @@ rule prepare_reference:
 
 rule calculate_expression:
   input:
-    bam=get_star_transcriptome,
+    bam="results/star/pe/{sample}/Aligned.toTranscriptome.out.bam",
     reference="ref/reference.seq",
   output:
     genes_results="results/rsem/{sample}.genes.results",
@@ -93,7 +93,7 @@ rule calculate_expression:
 
 rule rsem_generate_data_matrix:
   input:
-    get_rsem_output_all_units,
+    "results/rsem/{sample}.genes.results",
   output:
     temp("results/counts/all.tmp"),
   params:
