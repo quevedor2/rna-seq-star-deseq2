@@ -21,10 +21,10 @@ rule rseqc_junction_annotation:
         bai=get_star_bai,
         bed="results/qc/rseqc/annotation.bed",
     output:
-        "results/qc/rseqc/{sample}-{unit}.junctionanno.junction.bed",
+        "results/qc/rseqc/{sample}.junctionanno.junction.bed",
     priority: 1
     log:
-        "logs/rseqc/rseqc_junction_annotation/{sample}-{unit}.log",
+        "logs/rseqc/rseqc_junction_annotation/{sample}.log",
     params:
         extra=r"-q 255",  # STAR uses 255 as a score for unique mappers
         prefix=lambda w, output: output[0].replace(".junction.bed", ""),
@@ -41,10 +41,10 @@ rule rseqc_junction_saturation:
         bai=get_star_bai,
         bed="results/qc/rseqc/annotation.bed",
     output:
-        "results/qc/rseqc/{sample}-{unit}.junctionsat.junctionSaturation_plot.pdf",
+        "results/qc/rseqc/{sample}.junctionsat.junctionSaturation_plot.pdf",
     priority: 1
     log:
-        "logs/rseqc/rseqc_junction_saturation/{sample}-{unit}.log",
+        "logs/rseqc/rseqc_junction_saturation/{sample}.log",
     params:
         extra=r"-q 255",
         prefix=lambda w, output: output[0].replace(".junctionSaturation_plot.pdf", ""),
@@ -60,10 +60,10 @@ rule rseqc_stat:
         get_star_bam,
         bai=get_star_bai,
     output:
-        "results/qc/rseqc/{sample}-{unit}.stats.txt",
+        "results/qc/rseqc/{sample}.stats.txt",
     priority: 1
     log:
-        "logs/rseqc/rseqc_stat/{sample}-{unit}.log",
+        "logs/rseqc/rseqc_stat/{sample}.log",
     conda:
         "../envs/rseqc.yaml"
     shell:
@@ -76,10 +76,10 @@ rule rseqc_infer:
         bai=get_star_bai,
         bed="results/qc/rseqc/annotation.bed",
     output:
-        "results/qc/rseqc/{sample}-{unit}.infer_experiment.txt",
+        "results/qc/rseqc/{sample}.infer_experiment.txt",
     priority: 1
     log:
-        "logs/rseqc/rseqc_infer/{sample}-{unit}.log",
+        "logs/rseqc/rseqc_infer/{sample}.log",
     conda:
         "../envs/rseqc.yaml"
     shell:
@@ -92,10 +92,10 @@ rule rseqc_innerdis:
         bai=get_star_bai,
         bed="results/qc/rseqc/annotation.bed",
     output:
-        "results/qc/rseqc/{sample}-{unit}.inner_distance_freq.inner_distance.txt",
+        "results/qc/rseqc/{sample}.inner_distance_freq.inner_distance.txt",
     priority: 1
     log:
-        "logs/rseqc/rseqc_innerdis/{sample}-{unit}.log",
+        "logs/rseqc/rseqc_innerdis/{sample}.log",
     params:
         prefix=lambda w, output: output[0].replace(".inner_distance.txt", ""),
     conda:
@@ -110,10 +110,10 @@ rule rseqc_readdis:
         bai=get_star_bai,
         bed="results/qc/rseqc/annotation.bed",
     output:
-        "results/qc/rseqc/{sample}-{unit}.readdistribution.txt",
+        "results/qc/rseqc/{sample}.readdistribution.txt",
     priority: 1
     log:
-        "logs/rseqc/rseqc_readdis/{sample}-{unit}.log",
+        "logs/rseqc/rseqc_readdis/{sample}.log",
     conda:
         "../envs/rseqc.yaml"
     shell:
@@ -125,10 +125,10 @@ rule rseqc_readdup:
         get_star_bam,
         bai=get_star_bai,
     output:
-        "results/qc/rseqc/{sample}-{unit}.readdup.DupRate_plot.pdf",
+        "results/qc/rseqc/{sample}.readdup.DupRate_plot.pdf",
     priority: 1
     log:
-        "logs/rseqc/rseqc_readdup/{sample}-{unit}.log",
+        "logs/rseqc/rseqc_readdup/{sample}.log",
     params:
         prefix=lambda w, output: output[0].replace(".DupRate_plot.pdf", ""),
     conda:
@@ -142,10 +142,10 @@ rule rseqc_readgc:
         get_star_bam,
         bai=get_star_bai,
     output:
-        "results/qc/rseqc/{sample}-{unit}.readgc.GC_plot.pdf",
+        "results/qc/rseqc/{sample}.readgc.GC_plot.pdf",
     priority: 1
     log:
-        "logs/rseqc/rseqc_readgc/{sample}-{unit}.log",
+        "logs/rseqc/rseqc_readgc/{sample}.log",
     params:
         prefix=lambda w, output: output[0].replace(".GC_plot.pdf", ""),
     conda:
@@ -158,10 +158,10 @@ rule rseqc_readnvc:
         bam=get_star_bam,
         bai=get_star_bai,
     output:
-        "results/qc/rseqc/{sample}-{unit}.read_nvc.NVC_plot.pdf",
+        "results/qc/rseqc/{sample}.read_nvc.NVC_plot.pdf",
     priority: 1
     log:
-        "logs/rseqc/rseqc_readnvc/{sample}-{unit}.log",
+        "logs/rseqc/rseqc_readnvc/{sample}.log",
     params:
         prefix=lambda w, output: output[0].replace(".NVC_plot.pdf", ""),
     conda:
@@ -176,10 +176,10 @@ rule rseqc_rpkmsaturation:
         bai=get_star_bai,
         bed="results/qc/rseqc/annotation.bed",
     output:
-        "results/qc/rseqc/{sample}-{unit}_rpkmsaturation.saturation.pdf",
+        "results/qc/rseqc/{sample}_rpkmsaturation.saturation.pdf",
     priority: 1
     log:
-        "logs/rseqc/rseqc_rpkmsaturation/{sample}-{unit}.log",
+        "logs/rseqc/rseqc_rpkmsaturation/{sample}.log",
     params:
         prefix=lambda w, output: output[0].replace(".saturation.pdf", ""),
     conda:
@@ -192,10 +192,10 @@ rule rseqc_genebodycoverage:
         bam=get_star_bam,
         bai=get_star_bai,
     output:
-        "results/qc/rseqc/{sample}-{unit}_genebodycoverage.geneBodyCoverage.curves.pdf",
+        "results/qc/rseqc/{sample}_genebodycoverage.geneBodyCoverage.curves.pdf",
     priority: 1
     log:
-        "logs/rseqc/rseqc_genebodycoverage/{sample}-{unit}.log",
+        "logs/rseqc/rseqc_genebodycoverage/{sample}.log",
     params:
         housekeeping=config["rseqc"]["housekeeping_genes"],
         prefix=lambda w, output: output[0].replace(".curves.pdf", ""),
@@ -208,51 +208,51 @@ rule multiqc:
     input:
         lambda wc: get_star_output_all_units(wc, fi="bam"),
         expand(
-            "results/qc/rseqc/{unit.sample_name}-{unit.unit_name}.junctionanno.junction.bed",
+            "results/qc/rseqc/{unit.sample_name}.junctionanno.junction.bed",
             unit=units.itertuples(),
         ),
         expand(
-            "results/qc/rseqc/{unit.sample_name}-{unit.unit_name}.junctionsat.junctionSaturation_plot.pdf",
+            "results/qc/rseqc/{unit.sample_name}.junctionsat.junctionSaturation_plot.pdf",
             unit=units.itertuples(),
         ),
         expand(
-            "results/qc/rseqc/{unit.sample_name}-{unit.unit_name}.infer_experiment.txt",
+            "results/qc/rseqc/{unit.sample_name}.infer_experiment.txt",
             unit=units.itertuples(),
         ),
         expand(
-            "results/qc/rseqc/{unit.sample_name}-{unit.unit_name}.stats.txt",
+            "results/qc/rseqc/{unit.sample_name}.stats.txt",
             unit=units.itertuples(),
         ),
         expand(
-            "results/qc/rseqc/{unit.sample_name}-{unit.unit_name}.inner_distance_freq.inner_distance.txt",
+            "results/qc/rseqc/{unit.sample_name}.inner_distance_freq.inner_distance.txt",
             unit=units.itertuples(),
         ),
         expand(
-            "results/qc/rseqc/{unit.sample_name}-{unit.unit_name}.readdistribution.txt",
+            "results/qc/rseqc/{unit.sample_name}.readdistribution.txt",
             unit=units.itertuples(),
         ),
         expand(
-            "results/qc/rseqc/{unit.sample_name}-{unit.unit_name}.readdup.DupRate_plot.pdf",
+            "results/qc/rseqc/{unit.sample_name}.readdup.DupRate_plot.pdf",
             unit=units.itertuples(),
         ),
         expand(
-            "results/qc/rseqc/{unit.sample_name}-{unit.unit_name}.readgc.GC_plot.pdf",
+            "results/qc/rseqc/{unit.sample_name}.readgc.GC_plot.pdf",
             unit=units.itertuples(),
         ),
         expand(
-            "logs/rseqc/rseqc_junction_annotation/{unit.sample_name}-{unit.unit_name}.log",
+            "logs/rseqc/rseqc_junction_annotation/{unit.sample_name}.log",
             unit=units.itertuples(),
         ),
         expand(
-            "results/qc/rseqc/{unit.sample_name}-{unit.unit_name}.read_nvc.NVC_plot.pdf",
+            "results/qc/rseqc/{unit.sample_name}.read_nvc.NVC_plot.pdf",
             unit=units.itertuples(),
         ),
         expand(
-            "results/qc/rseqc/{unit.sample_name}-{unit.unit_name}_rpkmsaturation.saturation.pdf",
+            "results/qc/rseqc/{unit.sample_name}_rpkmsaturation.saturation.pdf",
             unit=units.itertuples(),
         ),
         #expand(
-        #    "results/qc/rseqc/{unit.sample_name}-{unit.unit_name}_genebodycoverage.geneBodyCoverage.curves.pdf",
+        #    "results/qc/rseqc/{unit.sample_name}_genebodycoverage.geneBodyCoverage.curves.pdf",
         #    unit=units.itertuples(),
         #),
     output:

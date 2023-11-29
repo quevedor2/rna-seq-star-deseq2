@@ -2,11 +2,11 @@ rule replace_rg:
   input:
     get_star_bam
   output:
-    "results/star/rg/{sample}-{unit}/Aligned.rg.bam",
+    "results/star/rg/{sample}/Aligned.rg.bam",
   log:
-    "logs/picard/replace_rg/{sample}-{unit}.log"
+    "logs/picard/replace_rg/{sample}.log"
   params:
-    "RGLB=lib1 RGPL=illumina RGPU={sample}-{unit} RGSM={sample}-{unit}"
+    "RGLB=lib1 RGPL=illumina RGPU={sample} RGSM={sample}"
   resources:
     mem_mb=1024
   wrapper:
@@ -16,9 +16,9 @@ rule index_rg:
   input:
     get_rg_bam,
   output:
-    "results/star/rg/{sample}-{unit}/Aligned.rg.bam.bai",
+    "results/star/rg/{sample}/Aligned.rg.bam.bai",
   log:
-    "logs/samtools/index/{sample}-{unit}.log"
+    "logs/samtools/index/{sample}.log"
   wrapper:
     "v0.75.0/bio/samtools/index"
 
@@ -27,11 +27,11 @@ rule collect_allelic_counts:
     bam=get_rg_bam,
     bai=get_rg_bai,
   output:
-    "results/genotyping/{sample}-{unit}.allelicCounts.tsv",
+    "results/genotyping/{sample}.allelicCounts.tsv",
   conda:
     "../envs/gatk.yaml",
   log:
-    "logs/gatk/collectalleliccounts/{sample}-{unit}.log"
+    "logs/gatk/collectalleliccounts/{sample}.log"
   params:
     ref=config['ref_index']['genome'],
     target=config['genotyping']['target'],
@@ -47,10 +47,10 @@ rule collect_allelic_counts:
 
 rule categorizeAD_gatk:
   input:
-    "results/genotyping/{sample}-{unit}.allelicCounts.tsv",
+    "results/genotyping/{sample}.allelicCounts.tsv",
   output:
-    intermediate=temp("results/genotyping/{sample}-{unit}_out.tmp"),
-    simple=temp("results/genotyping/{sample}-{unit}_out.tsv"),
+    intermediate=temp("results/genotyping/{sample}_out.tmp"),
+    simple=temp("results/genotyping/{sample}_out.tsv"),
   params:
     ref=2,
     alt=3,

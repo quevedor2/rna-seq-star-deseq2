@@ -56,16 +56,16 @@ rule calculate_expression:
     bam=get_star_transcriptome,
     reference="ref/reference.seq",
   output:
-    genes_results="results/rsem/{sample}-{unit}.genes.results",
-    isoforms_results="results/rsem/{sample}-{unit}.isoforms.results",
-    tbam=temp("results/rsem/{sample}-{unit}.transcript.bam"),
-    gbam=temp("results/rsem/{sample}-{unit}.genome.bam"),
+    genes_results="results/rsem/{sample}.genes.results",
+    isoforms_results="results/rsem/{sample}.isoforms.results",
+    tbam=temp("results/rsem/{sample}.transcript.bam"),
+    gbam=temp("results/rsem/{sample}.genome.bam"),
   params:
-    outprefix="results/rsem/{sample}-{unit}",
+    outprefix="results/rsem/{sample}",
     paired_end=lambda w: "--paired-end" if is_paired_end(w.sample) else "",
     extra="-bam --estimate-rspd --output-genome-bam --time --forward-prob 0 --seed 42",
   log:
-    "logs/rsem/calculate_expression/{sample}-{unit}.log",
+    "logs/rsem/calculate_expression/{sample}.log",
   shell:
     "ref=$(echo {input.reference} | sed 's/\\..*//'); "
     "module load rsem/1.3.0; "
