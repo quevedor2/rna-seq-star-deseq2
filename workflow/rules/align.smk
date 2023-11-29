@@ -13,7 +13,7 @@ rule align_pe:
     outprefix="results/star/pe/HPB-070-merged/",
   shell:
     """
-    module load STAR/2.7.9a
+    module load STAR/2.7.3a
     
     STAR \
     --quantMode GeneCounts TranscriptomeSAM \
