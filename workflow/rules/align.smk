@@ -58,9 +58,9 @@ rule align_pe:
 
 rule index_coord:
   input:
-    get_star_bam,
+    "results/star/pe/{sample}/Aligned.sortedByCoord.out.bam",
   output:
-    "results/star/{ends}/{sample}-{unit}/Aligned.sortedByCoord.out.bam.bai",
+    "results/star/pe/{sample}/Aligned.sortedByCoord.out.bam.bai",
   params:
   shell:
     """
