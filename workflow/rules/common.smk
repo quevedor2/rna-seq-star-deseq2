@@ -31,6 +31,22 @@ units = (
 validate(units, schema="../schemas/units.schema.yaml")
 
 
+
+def get_fq1(wildcards):
+    """Get raw FASTQ files from unit sheet."""
+    #u = units.loc[ (wildcards.sample, wildcards.unit), ["fq1", "fq2"] ].dropna()
+    #u = units.loc[ (wildcards.sample, '1'), ["fq1", "fq2"] ].dropna()
+    u = units.loc[ (wildcards.sample), ["fq1", "fq2"] ].dropna()
+    return [ f"{u.fq1}" ]
+
+def get_fq2(wildcards):
+    """Get raw FASTQ files from unit sheet."""
+    #u = units.loc[ (wildcards.sample, wildcards.unit), ["fq1", "fq2"] ].dropna()
+    #u = units.loc[ (wildcards.sample, '1'), ["fq1", "fq2"] ].dropna()
+    u = units.loc[ (wildcards.sample), ["fq1", "fq2"] ].dropna()
+    return [ f"{u.fq2}" ]
+
+
 def get_cutadapt_input(wildcards):
     unit = units.loc[wildcards.sample]
 

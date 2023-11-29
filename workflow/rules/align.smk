@@ -1,7 +1,7 @@
 rule align_pe:
   input:
-    fq1=get_map_reads_input_R1,
-    fq2=get_map_reads_input_R2
+    fq1=get_fq1,
+    fq2=get_fq2
   output:
     alignedcoord="results/star/pe/{sample}/Aligned.sortedByCoord.out.bam",
     alignedtranscriptome="results/star/pe/{sample}/Aligned.toTranscriptome.out.bam",
