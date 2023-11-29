@@ -62,7 +62,7 @@ rule calculate_expression:
     gbam=temp("results/rsem/{sample}.genome.bam"),
   params:
     outprefix="results/rsem/{sample}",
-    paired_end=lambda w: "--paired-end" if is_paired_end(w.sample) else "",
+    paired_end="--paired-end",
     extra="-bam --estimate-rspd --output-genome-bam --time --forward-prob 0 --seed 42",
   log:
     "logs/rsem/calculate_expression/{sample}.log",
@@ -78,6 +78,8 @@ rule calculate_expression:
     "$ref "
     "{params.outprefix} "
     "> {log} 2>&1"
+
+#paired_end=lambda w: "--paired-end" if is_paired_end(w.sample) else "",
 
 #rule rsem_generate_data_matrix:
 #  input:

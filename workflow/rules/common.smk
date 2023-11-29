@@ -51,3 +51,16 @@ def get_rsem_output_all_units(wildcards):
             )
         )
     return res
+
+def is_paired_end(sample):
+    sample_units = units.loc[sample]
+    fq2_null = sample_units["fq2"].isnull()
+    paired = ~fq2_null
+    all_paired = paired.all()
+    all_single = (~paired).all()
+    assert (
+        all_single or all_paired
+    ), "invalid units for sample {}, must be all paired end or all single end".format(
+        sample
+    )
+    return all_paired
