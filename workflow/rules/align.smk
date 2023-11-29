@@ -22,7 +22,7 @@ rule align_pe:
     --chimSegmentMin 10 \
     --chimOutType SeparateSAMold \
     --outSAMunmapped Within \
-    --sjdbGTFfile {params.star.gtf} {params.starparams} \
+    --sjdbGTFfile {params.stargtf} {params.starparams} \
     --runThreadN {threads} \
     --genomeDir {params.stargenome} \
     --readFilesIn {input.fq1} {input.fq2} \
