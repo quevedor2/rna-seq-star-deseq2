@@ -1,28 +1,37 @@
 rule align_pe:
-    input:
-        fq1=get_map_reads_input_R1,
-        fq2=get_map_reads_input_R2,
-    output:
-        "results/star/pe/{sample}-{unit}/Aligned.sortedByCoord.out.bam",
-        "results/star/pe/{sample}-{unit}/Aligned.toTranscriptome.out.bam",
-        "results/star/pe/{sample}-{unit}/ReadsPerGene.out.tab",
-    log:
-        "logs/star-pe/{sample}-{unit}.log",
-    params:
-        index=config["star"]["star-genome"],
-        extra="--quantMode GeneCounts TranscriptomeSAM "
-        "--outSAMtype BAM SortedByCoordinate "
-        "--outFilterIntronMotifs RemoveNoncanonical "
-        "--chimSegmentMin 10 "
-        "--chimOutType SeparateSAMold "
-        "--outSAMunmapped Within "
-        "--sjdbGTFfile {} {}".format(
-            config["star"]["gtf"], config["star"]["params"]
-        ),
-    threads: 24
-    wrapper:
-        "v0.75.0/bio/star/align"
-
+  input:
+    fq1=get_map_reads_input_R1,
+    fq2=get_map_reads_input_R2
+  output:
+    alignedcoord="results/star/pe/{sample}/Aligned.sortedByCoord.out.bam",
+    alignedtranscriptome="results/star/pe/{sample}/Aligned.toTranscriptome.out.bam",
+  threads: 16
+  params:
+    stargtf=config['star']['gtf'],
+    starparams=config['star']['params'],
+    stargenome=config["star"]["star-genome"],
+    outprefix="results/star/pe/HPB-070-merged/",
+  shell:
+    """
+    module load STAR/2.7.9a
+    
+    STAR \
+    --quantMode GeneCounts TranscriptomeSAM \
+    --outSAMtype BAM SortedByCoordinate \
+    --outFilterIntronMotifs RemoveNoncanonical \
+    --chimSegmentMin 10 \
+    --chimOutType SeparateSAMold \
+    --outSAMunmapped Within \
+    --sjdbGTFfile {params.star.gtf} {params.starparams} \
+    --runThreadN {threads} \
+    --genomeDir {params.stargenome} \
+    --readFilesIn {input.fq1} {input.fq2} \
+    --readFilesCommand zcat \
+    --outFileNamePrefix {params.outprefix} \
+    --outStd Log
+    """
+    
+    
 rule align_se:
     input:
         fq1=get_map_reads_input_R1,
@@ -43,7 +52,7 @@ rule align_se:
         "--sjdbGTFfile {} {}".format(
             config["star"]["gtf"], config["star"]["params"]
         ),
-    threads: 24
+    threads: 16
     wrapper:
         "v0.75.0/bio/star/align"
 
@@ -52,7 +61,10 @@ rule index_coord:
     get_star_bam,
   output:
     "results/star/{ends}/{sample}-{unit}/Aligned.sortedByCoord.out.bam.bai",
-  log:
-    "logs/samtools/index/{sample}-{unit}.{ends}.sortedByCoord.log"
-  wrapper:
-    "v0.75.0/bio/samtools/index"
+  params:
+  shell:
+    """
+    module load samtools/1.17
+    
+    samtools index ${input} ${output}
+    """

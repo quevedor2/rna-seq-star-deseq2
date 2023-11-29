@@ -16,7 +16,7 @@ rule immunedeconv:
         env=directory(config['env']['r41']),
 #    conda:
 #        "../envs/deseq2.yaml"
-    script:
+    shell:
         """
         source {params.conda} && conda activate {params.env};
         
