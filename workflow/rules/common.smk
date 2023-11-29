@@ -32,7 +32,7 @@ validate(units, schema="../schemas/units.schema.yaml")
 
 
 def get_cutadapt_input(wildcards):
-    unit = units.loc[wildcards.sample].loc[wildcards.unit]
+    unit = units.loc[wildcards.sample]
 
     if pd.isna(unit["fq1"]):
         # SRA sample (always paired-end for now)
@@ -61,7 +61,7 @@ def get_cutadapt_input(wildcards):
 
 def get_cutadapt_pipe_input(wildcards):
     files = list(
-        sorted(glob.glob(units.loc[wildcards.sample].loc[wildcards.unit, wildcards.fq]))
+        sorted(glob.glob(units.loc[wildcards.sample], wildcards.fq]))
     )
     assert len(files) > 0
     return files
@@ -86,7 +86,7 @@ def get_map_reads_input_R1(wildcards):
     if not is_activated("mergeReads"):
         if config["trimming"]["activate"]:
             return expand(
-                "results/trimmed/{sample}_{unit}_R1.fastq.gz",
+                "results/trimmed/{sample}_R1.fastq.gz",
                 unit=units.loc[wildcards.sample, "unit_name"],
                 sample=wildcards.sample,
             )
@@ -107,7 +107,7 @@ def get_map_reads_input_R2(wildcards):
         if not is_activated("mergeReads"):
             if config["trimming"]["activate"]:
                 return expand(
-                    "results/trimmed/{sample}_{unit}_R1.fastq.gz",
+                    "results/trimmed/{sample}_R1.fastq.gz",
                     unit=units.loc[wildcards.sample, "unit_name"],
                     sample=wildcards.sample,
                 )
@@ -154,8 +154,8 @@ def get_star_transcriptome(wildcards):
         lib = "pe"
     else:
         lib = "se"
-    return "results/star/{}/{}-{}/Aligned.toTranscriptome.out.bam".format(
-        lib, wildcards.sample, wildcards.unit
+    return "results/star/{}/{}/Aligned.toTranscriptome.out.bam".format(
+        lib, wildcards.sample
     )
 
 def get_star_bai(wildcards):
@@ -163,8 +163,8 @@ def get_star_bai(wildcards):
         lib = "pe"
     else:
         lib = "se"
-    return "results/star/{}/{}-{}/Aligned.sortedByCoord.out.bam.bai".format(
-        lib, wildcards.sample, wildcards.unit
+    return "results/star/{}/{}/Aligned.sortedByCoord.out.bam.bai".format(
+        lib, wildcards.sample
     )
 
 def get_star_bam(wildcards):
@@ -172,18 +172,18 @@ def get_star_bam(wildcards):
         lib = "pe"
     else:
         lib = "se"
-    return "results/star/{}/{}-{}/Aligned.sortedByCoord.out.bam".format(
-        lib, wildcards.sample, wildcards.unit
+    return "results/star/{}/{}/Aligned.sortedByCoord.out.bam".format(
+        lib, wildcards.sample
     )
 
 def get_rg_bam(wildcards):
-    return "results/star/rg/{}-{}/Aligned.rg.bam".format(
-        wildcards.sample, wildcards.unit
+    return "results/star/rg/{}/Aligned.rg.bam".format(
+        wildcards.sample
     )
 
 def get_rg_bai(wildcards):
-    return "results/star/rg/{}-{}/Aligned.rg.bam.bai".format(
-        wildcards.sample, wildcards.unit
+    return "results/star/rg/{}/Aligned.rg.bam.bai".format(
+        wildcards.sample
     )
 
 def get_strandedness(units):
