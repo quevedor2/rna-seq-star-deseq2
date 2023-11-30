@@ -77,7 +77,7 @@ rule index_coord_pe:
     """
     module load samtools/1.17
     
-    samtools index ${input} ${output}
+    samtools index {input} {output}
     """
 
 rule index_coord_se:
@@ -90,5 +90,5 @@ rule index_coord_se:
     """
     module load samtools/1.17
     
-    samtools index ${input} ${output}
+    samtools index {input} {output}
     """
