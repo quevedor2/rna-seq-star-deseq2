@@ -68,13 +68,16 @@ rule align_se:
 
 rule index_coord:
   input:
-    "results/star/{strand}/{sample}/Aligned.sortedByCoord.out.bam",
+    coord="results/star/{strand}/{sample}/Aligned.sortedByCoord.out.bam",
+    transcriptome="results/star/{strand}/{sample}/Aligned.toTranscriptome.out.bam",
   output:
-    "results/star/{strand}/{sample}/Aligned.sortedByCoord.out.bam.bai",
+    coord="results/star/{strand}/{sample}/Aligned.sortedByCoord.out.bam.bai",
+    transcriptome="results/star/{strand}/{sample}/Aligned.toTranscriptome.out.bam.bai",
   params:
   shell:
     """
     module load samtools/1.17
     
-    samtools index {input} {output}
+    samtools index {input.coord} {output.coord}
+    samtools index {input.transcriptome} {output.transcriptome}
     """

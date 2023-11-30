@@ -53,7 +53,7 @@ rule prepare_reference:
 
 rule calculate_expression:
   input:
-    bam="results/star/{strand}/{sample}/Aligned.toTranscriptome.out.bam",
+    bam=lambda wildcards: get_star_output_all_units(wildcards, fi='transcriptome'),
     reference="ref/reference.seq",
   output:
     genes_results="results/rsem/{sample}.genes.results",
