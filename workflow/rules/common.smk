@@ -61,7 +61,7 @@ def get_rsem_output_all_units(wildcards):
 
 def is_paired_end(sample):
     sample_units = units.loc[sample]
-    fq2_null = sample_units["fq2"].isnull()
+    fq2_null = sample_units.isnull()["fq2"]
     paired = ~fq2_null
     all_paired = paired.all()
     all_single = (~paired).all()
