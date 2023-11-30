@@ -34,8 +34,7 @@ rule align_pe:
     
 rule align_se:
     input:
-      fq1=get_fq1,
-      fq2=get_fq2
+      fq1=get_fq1
     output:
       alignedcoord="results/star/se/{sample}/Aligned.sortedByCoord.out.bam",
       alignedtranscriptome="results/star/se/{sample}/Aligned.toTranscriptome.out.bam",
@@ -67,24 +66,11 @@ rule align_se:
       --outStd Log
       """
 
-rule index_coord_pe:
+rule index_coord:
   input:
-    "results/star/pe/{sample}/Aligned.sortedByCoord.out.bam",
+    "results/star/{strand}/{sample}/Aligned.sortedByCoord.out.bam",
   output:
-    "results/star/pe/{sample}/Aligned.sortedByCoord.out.bam.bai",
-  params:
-  shell:
-    """
-    module load samtools/1.17
-    
-    samtools index {input} {output}
-    """
-
-rule index_coord_se:
-  input:
-    "results/star/se/{sample}/Aligned.sortedByCoord.out.bam",
-  output:
-    "results/star/se/{sample}/Aligned.sortedByCoord.out.bam.bai",
+    "results/star/{strand}/{sample}/Aligned.sortedByCoord.out.bam.bai",
   params:
   shell:
     """
