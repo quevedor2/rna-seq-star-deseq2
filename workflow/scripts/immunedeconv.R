@@ -61,6 +61,12 @@ dup_idx <- which(duplicated(symbols))
 tpm_filt <- tpm[-unique(sort(c(na_idx, dup_idx))), ]
 rownames(tpm_filt) <- symbols[-unique(sort(c(na_idx, dup_idx)))]
 tpm_filt <- tpm_filt[,-1, drop=F]
+rmidx <- sapply(c('^loc1', '^linc', '^rnu6', '^rn7s', '^mir', '^rpl', '^rps', '^snor'), function(i) grep(i, rownames(tpm_filt), ignore.case=T)) %>%
+    unlist
+if(length(rmidx) > 0) tpm_filt <- tpm_filt[-rmidx,]
+if(any(grepl("NCRNA00250", rownames(tpm_filt), ignore.case=T))){
+  tpm_filt <- tpm_filt[!grepl("NCRNA00250", rownames(tpm_filt), ignore.case=T),]
+}
 
 ggplotit <- function(res){
   cols <- rainbow(n=nrow(res), s = 0.5, v=0.6)
@@ -121,6 +127,7 @@ gg_mrg <- ggplot(deconv_melt, aes(x=sample, y=score, fill=method)) +
 
 ## Visualizations
 outdir <- dirname(opt$output)
+dir.create(outdir, recursive=T, showWarnings=F)
 pdf(file.path(outdir, "aggregate.pdf"), width=13, height = 13)
 gg_mrg
 dev.off()

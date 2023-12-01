@@ -10,7 +10,7 @@ rule immunedeconv:
     log:
         "logs/immunedeconv.log",
     params:
-        cibersort_path=config["immune"][" cibersort_path"],
+        cibersort_path=config["immune"]["cibersort_path"],
         mcp_path=config["immune"]["mcp_path"],
         conda=config['env']['conda_shell'],
         species=config['ref']['species'],
