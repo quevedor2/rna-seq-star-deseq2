@@ -138,10 +138,15 @@ rule format_tpm_matrix:
   input:
     "results/counts/all_tpm.tmp",
   output:
-    "results/counts/all_tpm.tsv",
+    round="results/counts/all_tpm.rounded.tsv",
+    tpm="results/counts/all_tpm.tsv",
   shell:
-    "sed 's/\"//g' {input} |  "
-    "sed 's/results\/rsem\///g' | "
-    "sed 's/-merged.genes.results//g' | "
-    "sed '1 s/^/gene/' | "
-    "sed -e 's/\.[0-9]*//g' > {output}"
+    '''
+    sed 's/\"//g' {input} |  
+    sed 's/results\/rsem\///g' |
+    sed 's/-merged.genes.results//g' |
+    sed '1 s/^/gene/' > {output.tpm}
+    
+     
+    sed -e 's/\.[0-9]*//g' {output.tpm} > {output.round}
+    '''
