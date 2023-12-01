@@ -14,7 +14,7 @@ rule immunedeconv:
         mcp_path=config["immune"]["mcp_path"],
         conda=config['env']['conda_shell'],
         species=config['ref']['species'],
-        rlib=config['env']['renv_path'],
+        renv=config['env']['renv_path'],
         env=directory(config['env']['r41']),
 #    conda:
 #        "../envs/deseq2.yaml"
@@ -24,6 +24,7 @@ rule immunedeconv:
         
         Rscript scripts/immunedeconv.R \
         --log {log} \
+        --renv {params.renv} \
         --cibersort {params.cibersort_path} \
         --mcp {params.mcp_path} \
         --species {params.species} \
