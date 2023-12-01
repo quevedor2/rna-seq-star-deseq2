@@ -39,7 +39,6 @@ rule align_se:
       alignedcoord="results/star/se/{sample}/Aligned.sortedByCoord.out.bam",
       alignedtranscriptome="results/star/se/{sample}/Aligned.toTranscriptome.out.bam",
       counts="results/star/se/{sample}/ReadsPerGene.out.tab",
-    threads: 16
     params:
       stargtf=config['star']['gtf'],
       starparams=config['star']['params'],
