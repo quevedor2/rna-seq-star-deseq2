@@ -3,6 +3,7 @@ option_list <- list(
     make_option(c("-v", "--verbose"), action="store_true", default=TRUE,
         help="Print extra output [default]"),
     make_option(c("-l", "--log"), default="./immunedeconv.log", help="Log file"),
+    make_option(c("-r", "--renv"), help="Path to renv library"),
     make_option(c("-c", "--cibersort"),
         default='/cluster/projects/mcgahalab/ref/immunedeconv/cibersort',
         help="Cibersort Path [default %default]"),
@@ -18,6 +19,7 @@ option_list <- list(
         help="RDS outpath, all other files are inferred from this path")
     )
 opt <- parse_args(OptionParser(option_list=option_list))
+renv::load(opt$renv)
 
 log <- file(opt$log, open="wt")
 sink(log)
