@@ -21,7 +21,6 @@ rule immunedeconv:
     shell:
         """
         module load R/4.2.1
-        source {params.conda} && conda activate {params.env};
         
         Rscript scripts/immunedeconv.R \
         --log {log} \
