@@ -53,7 +53,7 @@ rule prepare_reference:
 
 rule calculate_expression:
   input:
-    bam=lambda wildcards: get_star_output_all_units(wildcards, fi='transcriptome'),
+    bam=lambda wc: get_star_output_all_units(wc, fi='transcriptome', use='single'),
     reference="ref/reference.seq",
   output:
     genes_results="results/rsem/{sample}.genes.results",
@@ -95,7 +95,7 @@ rule calculate_expression:
 
 rule rsem_generate_data_matrix:
   input:
-    "results/rsem/{sample}.genes.results",
+    get_rsem_output_all_units,
   output:
     temp("results/counts/all.tmp"),
   params:
@@ -142,7 +142,7 @@ rule format_tpm_matrix:
     tpm="results/counts/all_tpm.tsv",
   shell:
     '''
-    sed 's/\"//g' {input} |  
+    sed 's/\"//g' {input} |
     sed 's/results\/rsem\///g' |
     sed 's/-merged.genes.results//g' |
     sed '1 s/^/gene/' > {output.tpm}
