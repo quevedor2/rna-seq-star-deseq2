@@ -1,6 +1,4 @@
 ## RSEQC
-
-
 rule rseqc_gtf2bed:
     input:
         config["star"]["gtf"],
@@ -17,8 +15,8 @@ rule rseqc_gtf2bed:
 
 rule rseqc_junction_annotation:
     input:
-        bam="results/star/{strand}/{sample}/Aligned.sortedByCoord.out.bam",
-        bai="results/star/{strand}/{sample}/Aligned.sortedByCoord.out.bam.bai",
+        bam=lambda wc: get_star_output(wc, fi='coord'),
+        bai=lambda wc: get_star_output(wc, fi='coord', bai=True),
         bed="results/qc/rseqc/annotation.bed",
     output:
         "results/qc/rseqc/{sample}.junctionanno.junction.bed",
@@ -37,8 +35,8 @@ rule rseqc_junction_annotation:
 
 rule rseqc_junction_saturation:
     input:
-        bam="results/star/{strand}/{sample}/Aligned.sortedByCoord.out.bam",
-        bai="results/star/{strand}/{sample}/Aligned.sortedByCoord.out.bam.bai",
+        bam=lambda wc: get_star_output(wc, fi='coord'),
+        bai=lambda wc: get_star_output(wc, fi='coord', bai=True),
         bed="results/qc/rseqc/annotation.bed",
     output:
         "results/qc/rseqc/{sample}.junctionsat.junctionSaturation_plot.pdf",
@@ -57,8 +55,8 @@ rule rseqc_junction_saturation:
 
 rule rseqc_stat:
     input:
-        bam="results/star/{strand}/{sample}/Aligned.sortedByCoord.out.bam",
-        bai="results/star/{strand}/{sample}/Aligned.sortedByCoord.out.bam.bai",
+        bam=lambda wc: get_star_output(wc, fi='coord'),
+        bai=lambda wc: get_star_output(wc, fi='coord', bai=True),
     output:
         "results/qc/rseqc/{sample}.stats.txt",
     priority: 1
@@ -72,8 +70,8 @@ rule rseqc_stat:
 
 rule rseqc_infer:
     input:
-        bam="results/star/{strand}/{sample}/Aligned.sortedByCoord.out.bam",
-        bai="results/star/{strand}/{sample}/Aligned.sortedByCoord.out.bam.bai",
+        bam=lambda wc: get_star_output(wc, fi='coord'),
+        bai=lambda wc: get_star_output(wc, fi='coord', bai=True),
         bed="results/qc/rseqc/annotation.bed",
     output:
         "results/qc/rseqc/{sample}.infer_experiment.txt",
@@ -88,8 +86,8 @@ rule rseqc_infer:
 
 rule rseqc_innerdis:
     input:
-        bam="results/star/{strand}/{sample}/Aligned.sortedByCoord.out.bam",
-        bai="results/star/{strand}/{sample}/Aligned.sortedByCoord.out.bam.bai",
+        bam=lambda wc: get_star_output(wc, fi='coord'),
+        bai=lambda wc: get_star_output(wc, fi='coord', bai=True),
         bed="results/qc/rseqc/annotation.bed",
     output:
         "results/qc/rseqc/{sample}.inner_distance_freq.inner_distance.txt",
@@ -106,8 +104,8 @@ rule rseqc_innerdis:
 
 rule rseqc_readdis:
     input:
-        bam="results/star/{strand}/{sample}/Aligned.sortedByCoord.out.bam",
-        bai="results/star/{strand}/{sample}/Aligned.sortedByCoord.out.bam.bai",
+        bam=lambda wc: get_star_output(wc, fi='coord'),
+        bai=lambda wc: get_star_output(wc, fi='coord', bai=True),
         bed="results/qc/rseqc/annotation.bed",
     output:
         "results/qc/rseqc/{sample}.readdistribution.txt",
@@ -122,8 +120,8 @@ rule rseqc_readdis:
 
 rule rseqc_readdup:
     input:
-        bam="results/star/{strand}/{sample}/Aligned.sortedByCoord.out.bam",
-        bai="results/star/{strand}/{sample}/Aligned.sortedByCoord.out.bam.bai",
+        bam=lambda wc: get_star_output(wc, fi='coord'),
+        bai=lambda wc: get_star_output(wc, fi='coord', bai=True),
     output:
         "results/qc/rseqc/{sample}.readdup.DupRate_plot.pdf",
     priority: 1
@@ -139,8 +137,8 @@ rule rseqc_readdup:
 
 rule rseqc_readgc:
     input:
-        "results/star/{strand}/{sample}/Aligned.sortedByCoord.out.bam",
-        bai="results/star/{strand}/{sample}/Aligned.sortedByCoord.out.bam.bai",
+        bam=lambda wc: get_star_output(wc, fi='coord'),
+        bai=lambda wc: get_star_output(wc, fi='coord', bai=True),
     output:
         "results/qc/rseqc/{sample}.readgc.GC_plot.pdf",
     priority: 1
@@ -151,12 +149,12 @@ rule rseqc_readgc:
     conda:
         "../envs/rseqc.yaml"
     shell:
-        "read_GC.py -i {input} -o {params.prefix} > {log} 2>&1"
+        "read_GC.py -i {input.bam} -o {params.prefix} > {log} 2>&1"
 
 rule rseqc_readnvc:
     input:
-        bam="results/star/{strand}/{sample}/Aligned.sortedByCoord.out.bam",
-        bai="results/star/{strand}/{sample}/Aligned.sortedByCoord.out.bam.bai",
+        bam=lambda wc: get_star_output(wc, fi='coord'),
+        bai=lambda wc: get_star_output(wc, fi='coord', bai=True),
     output:
         "results/qc/rseqc/{sample}.read_nvc.NVC_plot.pdf",
     priority: 1
@@ -172,8 +170,8 @@ rule rseqc_readnvc:
 
 rule rseqc_rpkmsaturation:
     input:
-        bam="results/star/{strand}/{sample}/Aligned.sortedByCoord.out.bam",
-        bai="results/star/{strand}/{sample}/Aligned.sortedByCoord.out.bam.bai",
+        bam=lambda wc: get_star_output(wc, fi='coord'),
+        bai=lambda wc: get_star_output(wc, fi='coord', bai=True),
         bed="results/qc/rseqc/annotation.bed",
     output:
         "results/qc/rseqc/{sample}_rpkmsaturation.saturation.pdf",
@@ -189,8 +187,8 @@ rule rseqc_rpkmsaturation:
 
 rule rseqc_genebodycoverage:
     input:
-        bam="results/star/{strand}/{sample}/Aligned.sortedByCoord.out.bam",
-        bai="results/star/{strand}/{sample}/Aligned.sortedByCoord.out.bam.bai",
+        bam=lambda wc: get_star_output(wc, fi='coord'),
+        bai=lambda wc: get_star_output(wc, fi='coord', bai=True),
     output:
         "results/qc/rseqc/{sample}_genebodycoverage.geneBodyCoverage.curves.pdf",
     priority: 1

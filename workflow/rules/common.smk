@@ -72,23 +72,55 @@ def is_paired_end(sample):
     )
     return all_paired
     
-def get_star_output_all_units(wildcards, fi="counts"):
+def get_star_output_all_units(wildcards, fi="coord", use='all'):
+    if fi == "coord":
+        outfile = "Aligned.sortedByCoord.out.bam"
+    elif fi == 'transcriptome':
+        outfile = "Aligned.toTranscriptome.out.bam"
+    else:
+	outfile = "ReadsPerGene.out.tab"
+    res = []
+    if use == 'all':
+        for unit in units.itertuples():
+            if is_paired_end(unit.sample_name):
+                lib = "pe"
+            else:
+                lib = "se"
+            res.append(
+                "results/star/{}/{}/{}".format(
+                    lib, unit.sample_name, outfile
+                )
+            )
+    else:
+        if is_paired_end(wildcards.sample):
+            lib = 'pe'
+        else:
+            lib = 'se'
+        res.append("results/star/{}/{}/{}".format(
+                lib, wildcards.sample, outfile
+                )
+        )
+    return res
+
+def get_star_output(wildcards, fi="coord", bai=False):
     if fi == "coord":
         outfile = "Aligned.sortedByCoord.out.bam"
     elif fi == 'transcriptome':
         outfile = "Aligned.toTranscriptome.out.bam"
     else:
         outfile = "ReadsPerGene.out.tab"
+    if bai:
+        outfile = outfile + ".bai"
+        
+    if is_paired_end(wildcards.sample):
+        lib = 'pe'
+    else:
+        lib = 'se'
+    
     res = []
-    for unit in units.itertuples():
-        if is_paired_end(unit.sample_name):
-            lib = "pe"
-        else:
-            lib = "se"
-        res.append(
-            "results/star/{}/{}/{}".format(
-                lib, unit.sample_name, outfile
-            )
+    res.append("results/star/{}/{}/{}".format(
+        lib, wildcards.sample, outfile
         )
+    )
     return res
     
