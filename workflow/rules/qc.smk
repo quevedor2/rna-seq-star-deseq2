@@ -13,6 +13,28 @@ rule rseqc_gtf2bed:
         "../scripts/gtf2bed.py"
 
 
+rule fastqcWIP:
+    input:
+        bam=lambda wc: get_star_output(wc, fi='coord'),
+        bai=lambda wc: get_star_output(wc, fi='coord', bai=True),
+        bed="results/qc/rseqc/annotation.bed",
+    output:
+        "results/qc/fastqc/{sample}.merged_fastqc.html",
+    priority: 1
+    log:
+        "logs/fastqc/{sample}.log",
+    params:
+        outdir="results/qc/fastqc/",
+    conda:
+        "../envs/rseqc.yaml"
+    shell:
+        """
+        module load fastqc/0.11.5
+        
+        fastqc {input.fq} \
+        -o {params.outdir}
+        """
+
 rule rseqc_junction_annotation:
     input:
         bam=lambda wc: get_star_output(wc, fi='coord'),

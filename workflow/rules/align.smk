@@ -5,6 +5,7 @@ rule align_pe:
   output:
     alignedcoord="results/star/pe/{sample}/Aligned.sortedByCoord.out.bam",
     alignedtranscriptome="results/star/pe/{sample}/Aligned.toTranscriptome.out.bam",
+    counts="results/star/pe/{sample}/ReadsPerGene.out.tab",
   threads: 16
   params:
     stargtf=config['star']['gtf'],
@@ -68,15 +69,25 @@ rule align_se:
 rule index_coord:
   input:
     coord="results/star/{strand}/{sample}/Aligned.sortedByCoord.out.bam",
-    transcriptome="results/star/{strand}/{sample}/Aligned.toTranscriptome.out.bam",
   output:
     coord="results/star/{strand}/{sample}/Aligned.sortedByCoord.out.bam.bai",
+  params:
+  shell:
+    """
+    module load samtools/1.17
+    
+    samtools index {input.coord} -o {output.coord}
+    """
+
+rule index_coord_transcriptome:
+  input:
+    transcriptome="results/star/{strand}/{sample}/Aligned.toTranscriptome.out.bam",
+  output:
     transcriptome="results/star/{strand}/{sample}/Aligned.toTranscriptome.out.bam.bai",
   params:
   shell:
     """
     module load samtools/1.17
     
-    samtools index {input.coord} {output.coord}
-    samtools index {input.transcriptome} {output.transcriptome}
+    samtools index {input.transcriptome} -o {output.transcriptome}
     """
