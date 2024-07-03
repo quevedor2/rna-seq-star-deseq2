@@ -25,8 +25,6 @@ rule fastqcWIP:
         "logs/fastqc/{sample}.log",
     params:
         outdir="results/qc/fastqc/",
-    conda:
-        "../envs/rseqc.yaml"
     shell:
         """
         module load fastqc/0.11.5
@@ -48,11 +46,18 @@ rule rseqc_junction_annotation:
     params:
         extra=r"-q 255",  # STAR uses 255 as a score for unique mappers
         prefix=lambda w, output: output[0].replace(".junction.bed", ""),
-    conda:
-        "../envs/rseqc.yaml"
+        rseqc=config['env']['rseqc']
     shell:
-        "junction_annotation.py {params.extra} -i {input.bam} -r {input.bed} -o {params.prefix} "
-        "> {log[0]} 2>&1"
+        """
+        module load apptainer/1.0.2
+        
+        apptainer exec {params.rseqc} \
+            junction_annotation.py {params.extra} \
+            -i {input.bam} \
+            -r {input.bed} \
+            -o {params.prefix} \
+            > {log[0]} 2>&1
+        """
 
 
 rule rseqc_junction_saturation:
@@ -68,11 +73,18 @@ rule rseqc_junction_saturation:
     params:
         extra=r"-q 255",
         prefix=lambda w, output: output[0].replace(".junctionSaturation_plot.pdf", ""),
-    conda:
-        "../envs/rseqc.yaml"
+        rseqc=config['env']['rseqc']
     shell:
-        "junction_saturation.py {params.extra} -i {input.bam} -r {input.bed} -o {params.prefix} "
-        "> {log} 2>&1"
+        """
+        module load apptainer/1.0.2
+        
+        apptainer exec {params.rseqc} \
+            junction_saturation.py {params.extra} \
+            -i {input.bam} \
+            -r {input.bed} \
+            -o {params.prefix}
+            > {log} 2>&1
+        """
 
 
 rule rseqc_stat:
@@ -84,10 +96,16 @@ rule rseqc_stat:
     priority: 1
     log:
         "logs/rseqc/rseqc_stat/{sample}.log",
-    conda:
-        "../envs/rseqc.yaml"
+    params:
+        rseqc=config['env']['rseqc']
     shell:
-        "bam_stat.py -i {input.bam} > {output} 2> {log}"
+        """
+        module load apptainer/1.0.2
+        
+        apptainer exec {params.rseqc} \
+            bam_stat.py \
+            -i {input.bam} > {output} 2> {log}
+        """
 
 
 rule rseqc_infer:
@@ -100,10 +118,15 @@ rule rseqc_infer:
     priority: 1
     log:
         "logs/rseqc/rseqc_infer/{sample}.log",
-    conda:
-        "../envs/rseqc.yaml"
+    params:
+        rseqc=config['env']['rseqc']
     shell:
-        "infer_experiment.py -r {input.bed} -i {input.bam} > {output} 2> {log}"
+        """
+        module load apptainer/1.0.2
+        
+        apptainer exec {params.rseqc} \
+            infer_experiment.py -r {input.bed} -i {input.bam} > {output} 2> {log}
+        """
 
 
 rule rseqc_innerdis:
@@ -118,10 +141,15 @@ rule rseqc_innerdis:
         "logs/rseqc/rseqc_innerdis/{sample}.log",
     params:
         prefix=lambda w, output: output[0].replace(".inner_distance.txt", ""),
-    conda:
-        "../envs/rseqc.yaml"
+        rseqc=config['env']['rseqc']
     shell:
-        "inner_distance.py -r {input.bed} -i {input.bam} -o {params.prefix} > {log} 2>&1"
+        """
+        module load apptainer/1.0.2
+        
+        apptainer exec {params.rseqc} \
+            inner_distance.py -r {input.bed} \
+            -i {input.bam} -o {params.prefix} > {log} 2>&1
+        """
 
 
 rule rseqc_readdis:
@@ -134,10 +162,17 @@ rule rseqc_readdis:
     priority: 1
     log:
         "logs/rseqc/rseqc_readdis/{sample}.log",
-    conda:
-        "../envs/rseqc.yaml"
+    params:
+        rseqc=config['env']['rseqc']
     shell:
-        "read_distribution.py -r {input.bed} -i {input.bam} > {output} 2> {log}"
+        """
+        module load apptainer/1.0.2
+        
+        apptainer exec {params.rseqc} \
+            read_distribution.py \
+            -r {input.bed} \
+            -i {input.bam} > {output} 2> {log}
+        """
 
 
 rule rseqc_readdup:
@@ -151,10 +186,16 @@ rule rseqc_readdup:
         "logs/rseqc/rseqc_readdup/{sample}.log",
     params:
         prefix=lambda w, output: output[0].replace(".DupRate_plot.pdf", ""),
-    conda:
-        "../envs/rseqc.yaml"
+        rseqc=config['env']['rseqc']
     shell:
-        "read_duplication.py -i {input.bam} -o {params.prefix} > {log} 2>&1"
+        """
+        module load apptainer/1.0.2
+        
+        apptainer exec {params.rseqc} \
+            read_duplication.py \
+            -i {input.bam} \
+            -o {params.prefix} > {log} 2>&1
+        """
 
 
 rule rseqc_readgc:
@@ -168,10 +209,16 @@ rule rseqc_readgc:
         "logs/rseqc/rseqc_readgc/{sample}.log",
     params:
         prefix=lambda w, output: output[0].replace(".GC_plot.pdf", ""),
-    conda:
-        "../envs/rseqc.yaml"
+        rseqc=config['env']['rseqc']
     shell:
-        "read_GC.py -i {input.bam} -o {params.prefix} > {log} 2>&1"
+        """
+        module load apptainer/1.0.2
+        
+        apptainer exec {params.rseqc} \
+            read_GC.py \
+            -i {input.bam} \
+            -o {params.prefix} > {log} 2>&1
+        """
 
 rule rseqc_readnvc:
     input:
@@ -184,10 +231,16 @@ rule rseqc_readnvc:
         "logs/rseqc/rseqc_readnvc/{sample}.log",
     params:
         prefix=lambda w, output: output[0].replace(".NVC_plot.pdf", ""),
-    conda:
-        "../envs/rseqc.yaml"
+        rseqc=config['env']['rseqc']
     shell:
-        "read_NVC.py -i {input.bam} -o {params.prefix} > {log} 2>&1"
+        """
+        module load apptainer/1.0.2
+        
+        apptainer exec {params.rseqc} \
+            read_NVC.py \
+            -i {input.bam} \
+            -o {params.prefix} > {log} 2>&1
+        """
 
 
 rule rseqc_rpkmsaturation:
@@ -202,10 +255,17 @@ rule rseqc_rpkmsaturation:
         "logs/rseqc/rseqc_rpkmsaturation/{sample}.log",
     params:
         prefix=lambda w, output: output[0].replace(".saturation.pdf", ""),
-    conda:
-        "../envs/rseqc.yaml"
+        rseqc=config['env']['rseqc']
     shell:
-        "RPKM_saturation.py -r {input.bed} -i {input.bam} -o {params.prefix} > {log} 2>&1"
+        """
+        module load apptainer/1.0.2
+        
+        apptainer exec {params.rseqc} \
+            RPKM_saturation.py \
+            -r {input.bed} \
+            -i {input.bam} \
+            -o {params.prefix} > {log} 2>&1
+        """
 
 rule rseqc_genebodycoverage:
     input:
@@ -219,10 +279,17 @@ rule rseqc_genebodycoverage:
     params:
         housekeeping=config["rseqc"]["housekeeping_genes"],
         prefix=lambda w, output: output[0].replace(".curves.pdf", ""),
-    conda:
-        "../envs/rseqc.yaml"
+        rseqc=config['env']['rseqc']
     shell:
-        "geneBody_coverage.py -r {params.housekeeping} -i {input.bam} -o {params.prefix} > {log} 2>&1"
+        """
+        module load apptainer/1.0.2
+        
+        apptainer exec {params.rseqc} \
+            geneBody_coverage.py \
+            -r {params.housekeeping} \
+            -i {input.bam} \
+            -o {params.prefix} > {log} 2>&1
+        """
 
 rule multiqc:
     input:
@@ -279,5 +346,20 @@ rule multiqc:
         "results/qc/multiqc_report.html",
     log:
         "logs/multiqc.log",
-    wrapper:
-        "v0.75.0/bio/multiqc"
+    params:
+        rseqc=config['env']['multiqc']
+    shell:
+        """
+        module load apptainer/1.0.2
+        
+        outputdir=$(dirname {output}}
+        outputfile=$(basename {output})
+        
+        apptainer exec {params.multiqc} \
+            multiqc \
+            --force \
+            -o $(dirname {output}) \
+            -n $(basename {output}) \
+            {input} \
+            {log}
+        """
