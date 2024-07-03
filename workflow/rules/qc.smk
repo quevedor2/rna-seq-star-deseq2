@@ -4,13 +4,17 @@ rule rseqc_gtf2bed:
         config["star"]["gtf"],
     output:
         bed="results/qc/rseqc/annotation.bed",
-        db=temp("results/qc/rseqc/annotation.db"),
     log:
         "logs/rseqc_gtf2bed.log",
-    conda:
-        "../envs/gffutils.yaml"
-    script:
-        "../scripts/gtf2bed.py"
+    shell:
+        """
+        module load  ucsctools/378
+        
+        cat {input} |\
+          gtfToGenePred /dev/stdin /dev/stdout |\
+          genePredToBed /dev/stdin /dev/stdout \
+          > {output.bed}
+        """
 
 
 rule fastqcWIP:
@@ -347,12 +351,12 @@ rule multiqc:
     log:
         "logs/multiqc.log",
     params:
-        rseqc=config['env']['multiqc']
+        multiqc=config['env']['multiqc']
     shell:
         """
         module load apptainer/1.0.2
         
-        outputdir=$(dirname {output}}
+        outputdir=$(dirname {output})
         outputfile=$(basename {output})
         
         apptainer exec {params.multiqc} \
