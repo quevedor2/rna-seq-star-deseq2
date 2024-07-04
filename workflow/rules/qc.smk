@@ -364,6 +364,5 @@ rule multiqc:
             --force \
             -o $(dirname {output}) \
             -n $(basename {output}) \
-            {input} \
-            {log}
+            {input}
         """
