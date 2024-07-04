@@ -34,11 +34,14 @@ rule fastqcWIP:
         module load fastqc/0.11.5
         
         outputdir=$(dirname {output})
+        mkdir -p $outputdir/{wildcards.sample}
         
         fastqc \
         -f bam \
-        -o $outputdir \
+        -o $outputdir/{wildcards.sample} \
         {input.bam}
+        
+        mv $outputdir/{wildcards.sample}/Aligned.sortedByCoord.out_fastqc.html {output}
         """
 
 rule rseqc_junction_annotation:
