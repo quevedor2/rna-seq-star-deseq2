@@ -42,6 +42,7 @@ rule fastqcWIP:
         {input.bam}
         
         mv $outputdir/{wildcards.sample}/Aligned.sortedByCoord.out_fastqc.html {output}
+        sed -i "s/Aligned.sortedByCoord/{wildcards.sample}/g" {output}
         """
 
 rule rseqc_junction_annotation:
