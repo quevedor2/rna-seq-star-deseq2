@@ -280,13 +280,13 @@ rule rseqc_genebodycoverage:
         bam=lambda wc: get_star_output(wc, fi='coord'),
         bai=lambda wc: get_star_output(wc, fi='coord', bai=True),
     output:
-        "results/qc/rseqc/{sample}_genebodycoverage.geneBodyCoverage.geneBodyCoverage.curves.pdf",
+        "results/qc/rseqc/{sample}_genebodycoverage.geneBodyCoverage.curves.pdf",
     priority: 1
     log:
         "logs/rseqc/rseqc_genebodycoverage/{sample}.log",
     params:
         housekeeping=config["rseqc"]["housekeeping_genes"],
-        prefix=lambda w, output: output[0].replace(".curves.pdf", ""),
+        prefix=lambda w, output: output[0].replace(".geneBodyCoverage.curves.pdf", ""),
         rseqc=config['env']['rseqc']
     shell:
         """
