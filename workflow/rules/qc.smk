@@ -23,7 +23,7 @@ rule fastqcWIP:
         bai=lambda wc: get_star_output(wc, fi='coord', bai=True),
         bed="results/qc/rseqc/annotation.bed",
     output:
-        "results/qc/fastqc/{sample}.merged_fastqc.html",
+        "results/qc/fastqc/{sample}_fastqc.html",
     priority: 1
     log:
         "logs/fastqc/{sample}.log",
@@ -34,15 +34,14 @@ rule fastqcWIP:
         module load fastqc/0.11.5
         
         outputdir=$(dirname {output})
-        mkdir -p $outputdir/{wildcards.sample}
+        ln -s {input.bam} {wildcards.sample}.bam
         
         fastqc \
         -f bam \
-        -o $outputdir/{wildcards.sample} \
-        {input.bam}
+        -o $outputdir \
+        {wildcards.sample}.bam
         
-        mv $outputdir/{wildcards.sample}/Aligned.sortedByCoord.out_fastqc.html {output}
-        sed -i "s/Aligned.sortedByCoord/{wildcards.sample}/g" {output}
+        rm {wildcards.sample}.bam
         """
 
 rule rseqc_junction_annotation:
@@ -355,7 +354,7 @@ rule multiqc:
            unit=units.itertuples(),
         ),
         expand(
-           "results/qc/fastqc/{unit.sample_name}.merged_fastqc.html",
+           "results/qc/fastqc/{unit.sample_name}_fastqc.html",
            unit=units.itertuples(),
         ),
     output:
