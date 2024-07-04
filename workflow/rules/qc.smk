@@ -347,7 +347,7 @@ rule multiqc:
             unit=units.itertuples(),
         ),
         expand(
-           "results/qc/rseqc/{unit.sample_name}_genebodycoverage.geneBodyCoverage.geneBodyCoverage.curves.pdf",
+           "results/qc/rseqc/{unit.sample_name}_genebodycoverage.geneBodyCoverage.curves.pdf",
            unit=units.itertuples(),
         ),
         expand(
