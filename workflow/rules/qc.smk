@@ -17,7 +17,7 @@ rule rseqc_gtf2bed:
         """
 
 
-rule fastqcWIP:
+rule fastqc:
     input:
         bam=lambda wc: get_star_output(wc, fi='coord'),
         bai=lambda wc: get_star_output(wc, fi='coord', bai=True),
@@ -342,16 +342,22 @@ rule multiqc:
             "results/qc/rseqc/{unit.sample_name}_rpkmsaturation.saturation.pdf",
             unit=units.itertuples(),
         ),
-        #expand(
-        #    "results/qc/rseqc/{unit.sample_name}_genebodycoverage.geneBodyCoverage.curves.pdf",
-        #    unit=units.itertuples(),
-        #),
+        expand(
+           "results/qc/rseqc/{unit.sample_name}_genebodycoverage.geneBodyCoverage.curves.pdf",
+           unit=units.itertuples(),
+        ),
+        expand(
+           "results/qc/fastqc/{unit.sample_name}.merged_fastqc.html"
+           unit=units.itertuples(),
+        ),
     output:
         "results/qc/multiqc_report.html",
     log:
         "logs/multiqc.log",
     params:
-        multiqc=config['env']['multiqc']
+        multiqc=config['env']['multiqc'],
+        rseqcdir='results/qc/rseqc/',
+        fastqcdir='results/qc/fastqc/',
     shell:
         """
         module load apptainer/1.0.2
@@ -364,5 +370,5 @@ rule multiqc:
             --force \
             -o $(dirname {output}) \
             -n $(basename {output}) \
-            {input}
+            {params.rseqcdir} {params.fastqcdir}
         """
