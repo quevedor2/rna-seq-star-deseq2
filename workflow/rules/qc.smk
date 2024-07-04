@@ -17,7 +17,7 @@ rule rseqc_gtf2bed:
         """
 
 
-rule fastqc:
+rule fastqcWIP:
     input:
         bam=lambda wc: get_star_output(wc, fi='coord'),
         bai=lambda wc: get_star_output(wc, fi='coord', bai=True),
@@ -33,8 +33,12 @@ rule fastqc:
         """
         module load fastqc/0.11.5
         
-        fastqc {input.fq} \
-        -o {params.outdir}
+        outputdir=$(dirname {output})
+        
+        fastqc \
+        -f bam \
+        -o $outputdir \
+        {input.bam}
         """
 
 rule rseqc_junction_annotation:
@@ -276,7 +280,7 @@ rule rseqc_genebodycoverage:
         bam=lambda wc: get_star_output(wc, fi='coord'),
         bai=lambda wc: get_star_output(wc, fi='coord', bai=True),
     output:
-        "results/qc/rseqc/{sample}_genebodycoverage.geneBodyCoverage.curves.pdf",
+        "results/qc/rseqc/{sample}_genebodycoverage.geneBodyCoverage.geneBodyCoverage.curves.pdf",
     priority: 1
     log:
         "logs/rseqc/rseqc_genebodycoverage/{sample}.log",
@@ -343,11 +347,11 @@ rule multiqc:
             unit=units.itertuples(),
         ),
         expand(
-           "results/qc/rseqc/{unit.sample_name}_genebodycoverage.geneBodyCoverage.curves.pdf",
+           "results/qc/rseqc/{unit.sample_name}_genebodycoverage.geneBodyCoverage.geneBodyCoverage.curves.pdf",
            unit=units.itertuples(),
         ),
         expand(
-           "results/qc/fastqc/{unit.sample_name}.merged_fastqc.html"
+           "results/qc/fastqc/{unit.sample_name}.merged_fastqc.html",
            unit=units.itertuples(),
         ),
     output:
