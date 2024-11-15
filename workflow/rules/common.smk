@@ -51,7 +51,7 @@ def get_fq2(wildcards):
 
 def get_rsem_output_all_units(wildcards):
     res = []
-    for unit in units.itertuples():
+    for unit in samples.itertuples():
         res.append(
             "results/rsem/{}.genes.results".format(
                 unit.sample_name
@@ -123,4 +123,3 @@ def get_star_output(wildcards, fi="coord", bai=False):
         )
     )
     return res
-    

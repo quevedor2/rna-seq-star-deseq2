@@ -4,7 +4,7 @@ rule align_pe:
     fq2=get_fq2
   output:
     alignedcoord="results/star/pe/{sample}/Aligned.sortedByCoord.out.bam",
-    alignedtranscriptome="results/star/pe/{sample}/Aligned.toTranscriptome.out.bam",
+    alignedtranscriptome=temp("results/star/pe/{sample}/Aligned.toTranscriptome.out.bam"),
     counts="results/star/pe/{sample}/ReadsPerGene.out.tab",
   threads: 16
   params:
